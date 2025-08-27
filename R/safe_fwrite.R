@@ -1,0 +1,231 @@
+#' Safely write a dataset to CSV with metadata logging
+#'
+#' Writes a data frame to a standardized T drive location (or user-defined path), enforces character
+#' types on specific ID columns, applies optional compression, and logs metadata to a central export log.
+#' Supports both fact and dimension tables and validates metadata inputs before writing.
+#'
+#' @param data A data frame to export.
+#' @param path Optional. Full file path to write the CSV. If `NULL`, a path is generated automatically based on metadata.
+#' @param char_cols A character vector of column names to convert to character before export. Default is `c("cds", "county_code", "district_code", "school_code")`.
+#' @param compress Logical. If `TRUE`, appends `.gz` to the filename and compresses the output. Default is `FALSE`.
+#' @param n_check Integer. Number of rows to preview after writing. Default is 6.
+#' @param log_metadata A named list containing metadata fields, including `data_year`, `data_source`, `data_description`, and `user_note`. If `NULL`, the function uses the corresponding individual arguments.
+#' @param data_year The year the data represents. Required if `log_metadata` is not supplied.
+#' @param data_source A short label identifying the source of the data (e.g., `"CDE"`, `"Dashboard"`).
+#' @param data_description A short description of the dataset (e.g., `"Chronic absenteeism rates by subgroup"`).
+#' @param user_note A note describing the nature of the export. Must include `"fact"` or `"dim"` to indicate table type.
+#' @param table_name The base name of the output table.
+#' @param dim_description Optional. A short label used to describe the dimension (e.g., `"race_ethnicity"`). Appended to the file name.
+#' @param log_path The path to the export log CSV. Default is `"export_log.csv"`.
+#' @param canonical_table_id Optional. A unique identifier for the exported table. Defaults to `table_name` if `NULL`.
+#' @param dimension_type Optional. One of `"universal"`, `"annualized"`, or `"other"`. Applies to dimension tables.
+#'
+#' @return Invisibly returns `NULL`. The function writes the data to disk and logs metadata to a central log file.
+#'
+#' @details
+#' - Validates required metadata fields and data source types.
+#' - Pads dimension codes as needed and enforces character types on key fields.
+#' - If `log_path` exists, overwrites log entry for the same `canonical_table_id`, otherwise appends a new row.
+#' - Automatically creates directories if needed and checks file size after writing.
+#'
+#' @export
+
+safe_fwrite <- function(data, path = NULL,
+                        char_cols = c("cds", "county_code", "district_code", "school_code"),
+                        compress = FALSE,
+                        n_check = 6,
+                        log_metadata = NULL,
+                        data_year = NULL,
+                        data_source = NULL,
+                        data_description = NA,
+                        user_note = NA,
+                        table_name = NULL,
+                        dim_description = NULL,
+                        log_path = "export_log.csv",
+                        canonical_table_id = NULL,
+                        dimension_type = NULL) {
+
+  # Construct default path if not provided
+  if (is.null(path)) {
+    required <- c("data_year", "data_source", "table_name")
+    missing_args <- required[!sapply(list(data_year, data_source, table_name), function(x) !is.null(x))]
+
+    if (length(missing_args) > 0) {
+      stop(paste0("❌ To auto-generate the path, you must supply: ",
+                  paste(missing_args, collapse = ", "), "."))
+    }
+  }
+
+  # Allow shorthand metadata if log_metadata not provided
+  if (is.null(log_metadata)) {
+    if (is.null(data_year) || is.null(data_source)) {
+      stop("❌ You must supply either `log_metadata` or both `data_year` and `data_source`.")
+    }
+    log_metadata <- list(
+      data_year = data_year,
+      data_source = data_source,
+      data_description = data_description,
+      user_note = user_note
+    )
+  }
+
+  # Validate that data_description is provided
+  if (is.null(log_metadata$data_description) || is.na(log_metadata$data_description) || log_metadata$data_description == "") {
+    stop("❌ Please provide a brief description of what's in this data file using `data_description`.")
+  }
+
+  # Validate required metadata fields
+  required_fields <- c("data_year", "data_source")
+  missing_fields <- setdiff(required_fields, names(log_metadata))
+  if (length(missing_fields) > 0) {
+    stop("❌ Missing required `log_metadata` fields: ",
+         paste(missing_fields, collapse = ", "))
+  }
+
+  # Validate and standardize data_source values
+  allowed_sources <- c("Assessment", "CDE", "Dashboard")
+  input_source <- tolower(log_metadata$data_source)
+  matched_idx <- match(input_source, tolower(allowed_sources))
+
+  if (is.na(matched_idx)) {
+    stop("❌ `data_source` must be one of: ", paste(allowed_sources, collapse = ", "))
+  }
+
+  # Store canonical label for logging (title-case)
+  log_metadata$data_source <- allowed_sources[matched_idx]
+
+  # Store lowercase version separately if you need it for folder names
+  folder_data_source <- tolower(allowed_sources[matched_idx])
+
+  # Validate user_note contains "fact" or "dim"
+  if (!grepl("\\bfact\\b|\\bdim\\b", log_metadata$user_note, ignore.case = TRUE)) {
+    stop("❌ Your `user_note` must clearly include either 'fact' or 'dim' in the note.")
+  }
+
+  # Determine table suffix
+  table_type <- tolower(stringr::str_extract(user_note, "\\b(fact|dim)\\b"))
+  if (is.na(table_type)) {
+    stop("❌ Your `user_note` must clearly include either 'fact' or 'dim'.")
+  }
+
+  # Clean dim_description for file name (if provided)
+  if (!is.null(dim_description)) {
+    dim_description <- janitor::make_clean_names(dim_description)
+  }
+
+  # Build enhanced table name
+  final_table_name <- paste0(
+    table_name,
+    if (!is.null(dim_description)) paste0("_", dim_description),
+    "_", table_type
+  )
+
+  # Auto-generate saving path, T drive specific
+  if (is.null(path)) {
+    base_dir <- "T:/Data Warehouse"
+    path <- file.path(base_dir,
+                      as.character(data_year),
+                      "Data Files",
+                      folder_data_source,
+                      paste0(final_table_name, ".csv"))
+
+    # Make sure the folder exists
+    dir.create(dirname(path), recursive = TRUE, showWarnings = FALSE)
+  }
+
+  # Apply compression if requested
+  if (compress && !grepl("\\.gz$", path)) {
+    path <- paste0(path, ".gz")
+  }
+
+  # Determine table type from user_note
+  table_type <- tolower(stringr::str_extract(log_metadata$user_note, "\\b(fact|dim)\\b"))
+
+  # Define allowed char columns based on table type
+  allowed_char_cols <- if (table_type == "dim") {
+    c("cds", "county_code", "district_code", "school_code")
+  } else if (table_type == "fact") {
+    c("cds")
+  } else {
+    stop("❌ Could not determine table type from `user_note`. Please include 'fact' or 'dim'.")
+  }
+
+  # Filter to only existing columns in the data
+  existing_char_cols <- intersect(allowed_char_cols, names(data))
+
+  # Coerce character columns
+  data <- data %>%
+    mutate(across(all_of(existing_char_cols), as.character))
+
+  # Write the file
+  fwrite(data, path)
+  message("✅ File written: ", path)
+
+  # Preview first n rows with character column types enforced
+  print(fread(path, nrows = n_check,
+              colClasses = list(character = existing_char_cols)))
+
+  # File info
+  file_info <- file.info(path)
+  if (is.na(file_info$size)) {
+    stop("File does not exist or is unreadable: ", path)
+  }
+
+  canonical_table_id <- canonical_table_id %||% table_name
+
+  dimension_type <- dimension_type %||% NA
+
+  valid_dimension_types <- c("universal", "annualized", "other")
+  if (!is.null(dimension_type) && !is.na(dimension_type)) {
+    if (!tolower(dimension_type) %in% valid_dimension_types) {
+      stop("❌ `dimension_type` must be one of: ",
+           paste(valid_dimension_types, collapse = ", "))
+    }
+    dimension_type <- tolower(dimension_type)
+  }
+
+  # Construct and write log entry
+  log_entry <- data.frame(
+    timestamp = format(Sys.time(), "%Y-%m-%d %H:%M:%S"),
+    file_name = paste0(final_table_name, if (compress) ".csv.gz" else ".csv"),
+    file_path = normalizePath(path),
+    file_size_MB = round(file_info$size / 1e6, 2),
+    canonical_table_id = canonical_table_id,
+    dimension_type = dimension_type,
+    n_rows = nrow(data),
+    n_cols = ncol(data),
+    data_year = log_metadata$data_year,
+    data_source = log_metadata$data_source,
+    table_type = table_type,
+    data_description = log_metadata$data_description,
+    dim_description = dim_description %||% NA,
+    user_note = log_metadata$user_note,
+    user = Sys.info()[["user"]],
+    stringsAsFactors = FALSE
+  )
+
+  # Read log if it exists
+  if (file.exists(log_path)) {
+    existing_log <- read.csv(log_path, stringsAsFactors = FALSE)
+
+    # Overwrite row if file_path exists
+    match_idx <- which(existing_log$canonical_table_id == canonical_table_id)
+
+    if (length(match_idx) > 0) {
+      existing_log[match_idx[1], ] <- log_entry
+      write.csv(existing_log, file = log_path, row.names = FALSE)
+      message("🔁 Existing log entry overwritten for: ", log_entry$file_name)
+    } else {
+      write.table(log_entry, file = log_path, append = TRUE, sep = ",",
+                  row.names = FALSE, col.names = FALSE)
+      message("📝 Log entry appended to: ", log_path)
+    }
+  } else {
+    # New log file
+    write.table(log_entry, file = log_path, append = FALSE, sep = ",",
+                row.names = FALSE, col.names = TRUE)
+    message("📄 New log created: ", log_path)
+  }
+
+  invisible(NULL)
+}

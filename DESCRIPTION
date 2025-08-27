@@ -1,0 +1,11 @@
+Package: cdetidy
+Title: Packages you can use to export, transform and load California Department of Education Data including Dashboard files, Assessment files and other CDE provided files. These packages are all functions needed to extract that data, clean it and load it onto a server that utilizes SQL storage and code. Tidyverse packages are used in the transform process as well. 
+Version: 0.0.0.9000
+Authors@R: 
+    person("First", "Last", , "first.last@example.com", role = c("aut", "cre"))
+Description: What the package does (one paragraph).
+License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
+    license
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.2
