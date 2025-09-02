@@ -6,3 +6,5 @@ pkgdown::build_site()
 
 devtools::install_github("jaubele/cdetidy")
 library(cdetidy)
+devtools::load_all()
+devtools::document()
