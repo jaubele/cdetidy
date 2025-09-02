@@ -1,8 +1,6 @@
 
 A tidyverse-style toolkit for working with California Department of Education (CDE) datasets.
 
- **A tidyverse-style toolkit for working with California Department of Education (CDE) datasets.**
-
 The `cdetidy` R package contains a collection of functions developed by the Orange County Department of Education (OCDE) for efficiently transforming, validating, labeling, and exporting public CDE datasets. It is tailored to support internal OCDE workflows related to data warehousing, reporting, and dashboard preparation — but may be useful for others working with similar data structures.
 
 ---
