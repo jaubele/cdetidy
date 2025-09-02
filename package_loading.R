@@ -1,8 +1,8 @@
-install.packages(c("usethis", "devtools", "roxygen2", "testthat"))
-install.packages("pkgdown")  # for documentation website later
-usethis::create_package("T:/Data Warehouse/Global R Scripts/cdetidy")
+install.packages("git2r")
+library(git2r)
+library(usethis)
+usethis::use_pkgdown()
+pkgdown::build_site()
 
-devtools::load_all()
-devtools::document()
-devtools::install()
+devtools::install_github("jaubele/cdetidy")
 library(cdetidy)
