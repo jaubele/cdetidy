@@ -1,3 +1,33 @@
+#' Generate and log a SQL schema for a data frame
+#'
+#' Builds a schema definition table from a data frame by inspecting its column types, nullability,
+#' and primary/foreign key indicators. The schema is saved to a central log (`primary_sql_schema_log.csv`)
+#' and to an individual table-level schema file.
+#'
+#' @param data A data frame to analyze.
+#' @param table_name The base name of the SQL table.
+#' @param data_year A 4-digit year indicating the data vintage.
+#' @param data_source A string identifying the data source (must be `"Assessment"`, `"CDE"`, or `"Dashboard"`).
+#' @param user_note A short note describing the data (must include `"fact"` or `"dim"`).
+#' @param dim_description Optional. A short label describing the dimension content (e.g., `"race_ethnicity"`).
+#' @param max_char Maximum length to assign to character columns (default is 255).
+#' @param primary_key A character vector of column(s) that make up the primary key.
+#' @param foreign_keys A named character vector like `c("column_name" = "ref_table")`.
+#' @param canonical_table_id Optional. A unique ID for the table. Defaults to `table_name`.
+#' @param dimension_type Optional. One of `"universal"`, `"annualized"`, or `"other"` (used only for dimension tables).
+#'
+#' @return A tibble containing the schema definition for the input data. The result is also written to:
+#' - The central schema log: `T:/Data Warehouse/schema_files/primary_sql_schema_log.csv`
+#' - An individual schema file by table: `T:/Data Warehouse/schema_files/<year>/<source>/<fact|dim>/<table>_schema.csv`
+#'
+#' @details
+#' - Infers SQL column types (`VARCHAR`, `INT`, `DECIMAL`, etc.) based on data values.
+#' - Enforces uniqueness and completeness of primary key.
+#' - Validates format and existence of foreign key mappings.
+#' - Updates the central log by replacing existing entries for the same `canonical_table_id`.
+#'
+#' @export
+
 sql_schema_log <- function(data,
                            table_name,
                            data_year,

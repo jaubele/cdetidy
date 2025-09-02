@@ -1,8 +1,26 @@
-install.packages(c("usethis", "devtools", "roxygen2", "testthat"))
-install.packages("pkgdown")  # for documentation website later
-usethis::create_package("T:/Data Warehouse/Global R Scripts/cdetidy")
-
 devtools::load_all()
 devtools::document()
 devtools::install()
+usethis::use_roxygen_md()
+devtools::install_github("jaubele/cdetidy")
+load_and_compare_files()
+
+install.packages("git2r")
+library(git2r)
+library(usethis)
+usethis::use_git_config(user.name = "jaubele", user.email = "jaubele@ocde.us")
+usethis::use_git()
+usethis::use_github(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)
+usethis::gh_token_help()
+usethis::create_github_token()
+usethis::edit_r_environ()
+devtools::install_github("r-lib/usethis")  # Just in case
+usethis::use_github()
+usethis::git_push()
+gitcreds::gitcreds_set()
+usethis::use_git_remote("origin", url = NULL, overwrite = TRUE)
+usethis::use_pkgdown()
+pkgdown::build_site()
+
+devtools::install_github("jaubele/cdetidy")
 library(cdetidy)
