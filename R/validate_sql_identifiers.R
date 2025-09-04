@@ -7,7 +7,7 @@
 #'
 #' @param name_vec A character vector of names to validate.
 #' @param type A string indicating what type of identifier is being checked. Must be `"column"` or `"table"`. Default is `"column"`.
-#' @param max_length Maximum number of characters allowed in a name. Default is 63.
+#' @param max_length Maximum number of characters allowed in a name. Default is 128.
 #'
 #' @return Invisibly returns `NULL`. Raises an error if any invalid names are found.
 #'
@@ -21,7 +21,7 @@
 #'
 #' @export
 
-validate_sql_identifiers <- function(name_vec, type = c("column", "table"), max_length = 63) {
+validate_sql_identifiers <- function(name_vec, type = c("column", "table"), max_length = 128) {
   type <- match.arg(type)
 
   # Pattern: starts with letter or underscore, and contains only letters, numbers, or underscores

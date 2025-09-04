@@ -8,6 +8,7 @@
 #' @param sample_n Integer. Number of rows to sample for validation (if `full_run = FALSE`). Default is 10,000.
 #' @param full_run Logical. If `TRUE`, checks the entire dataset. Default is `FALSE`.
 #' @param seed An integer used to seed the random sample (only applies if `full_run = FALSE`). Default is 1234.
+#' @param show_examples Integer. If duplicates are found, print up to this many example offending key combinations (after de-duplicating). Set to 0 to suppress examples. Default is 10.
 #'
 #' @return Invisibly returns `NULL`. Prints a success or failure message indicating whether the key uniquely identifies rows.
 #'
@@ -22,7 +23,7 @@
 #'
 #' @export
 
-validate_primary_key <- function(data, key_cols, sample_n = 10000, full_run = FALSE, seed = 1234) {
+validate_primary_key <- function(data, key_cols, sample_n = 10000, full_run = FALSE, seed = 1234, show_examples = 10) {
 
   data <- as.data.frame(data)  # ensure base R compatibility
 
@@ -36,26 +37,44 @@ validate_primary_key <- function(data, key_cols, sample_n = 10000, full_run = FA
 
   # Sampling logic
   if (!full_run && total_rows > sample_n) {
+
     set.seed(seed)
-    data <- data[sample(total_rows, sample_n), , drop = FALSE]
+
+    idx  <- sample.int(total_rows, sample_n)
+    data <- data[idx, , drop = FALSE]
+
     cat("📊 Sampled ", sample_n, " of ", total_rows, " rows for primary key validation.\n")
     cat("🔍 To check the entire dataset, use: full_run = TRUE\n")
-  } else if (full_run) {
-    cat("📊 Checking all ", total_rows, " rows for primary key validation...\n")
   } else {
-    cat("📊 Dataset has only ", total_rows, " rows — using full dataset for check.\n")
+
+    cat("📊 Checking all ", total_rows, " rows for primary key validation...\n")
   }
 
-  # Check for duplicates
-  duplicated_exists <- anyDuplicated(data[, key_cols, drop = FALSE]) > 0
+  # 3) NA check in key columns
+  na_counts <- vapply(key_cols, function(k) sum(is.na(data[[k]])), integer(1))
+  if (any(na_counts > 0)) {
+    message("⚠️ NAs in key columns:")
+    print(stats::setNames(as.integer(na_counts), key_cols))
+  }
 
-  if (duplicated_exists) {
-    message("\033[31m❌ The combination of columns [", paste(key_cols, collapse = ", "), "] does NOT uniquely identify rows.\033[0m")
-    message("→ Try adding more columns to define a composite primary key.")
-  } else {
+  # 4) Duplicate check
+  dup_flag <- duplicated(data[, key_cols, drop = FALSE])
+  dup_n    <- sum(dup_flag)
+
+  if (dup_n == 0 && all(na_counts == 0)) {
     message("\033[32m✅ These columns [", paste(key_cols, collapse = ", "), "] comprise the primary key",
             if (!full_run && total_rows > sample_n) " (within this sample)", ".", "\033[0m")
+    return(invisible(list(pass = TRUE, duplicates = 0, na = na_counts)))
   }
 
-  invisible(NULL)
+  # 5) Report duplicates (with examples)
+  if (dup_n > 0) {
+    message("\033[31m❌ ", dup_n, " duplicate row(s) by [", paste(key_cols, collapse = ", "), "].\033[0m")
+    dups <- data[dup_flag, key_cols, drop = FALSE]
+    if (nrow(dups) > show_examples) dups <- head(dups, show_examples)
+    message("🔎 Example offending keys:")
+    print(unique(dups))
+  }
+
+  invisible(list(pass = FALSE, duplicates = dup_n, na = na_counts))
 }

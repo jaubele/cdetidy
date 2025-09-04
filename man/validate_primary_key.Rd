@@ -9,7 +9,8 @@ validate_primary_key(
   key_cols,
   sample_n = 10000,
   full_run = FALSE,
-  seed = 1234
+  seed = 1234,
+  show_examples = 10
 )
 }
 \arguments{
@@ -22,6 +23,8 @@ validate_primary_key(
 \item{full_run}{Logical. If \code{TRUE}, checks the entire dataset. Default is \code{FALSE}.}
 
 \item{seed}{An integer used to seed the random sample (only applies if \code{full_run = FALSE}). Default is 1234.}
+
+\item{show_examples}{Integer. If duplicates are found, print up to this many example offending key combinations (after de-duplicating). Set to 0 to suppress examples. Default is 10.}
 }
 \value{
 Invisibly returns \code{NULL}. Prints a success or failure message indicating whether the key uniquely identifies rows.

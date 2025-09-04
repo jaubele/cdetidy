@@ -13,6 +13,7 @@ safe_fwrite(
   log_metadata = NULL,
   data_year = NULL,
   data_source = NULL,
+  data_type = NULL,
   data_description = NA,
   user_note = NA,
   table_name = NULL,
@@ -38,6 +39,8 @@ safe_fwrite(
 \item{data_year}{The year the data represents. Required if \code{log_metadata} is not supplied.}
 
 \item{data_source}{A short label identifying the source of the data (e.g., \code{"CDE"}, \code{"Dashboard"}).}
+
+\item{data_type}{Short label used to choose the subfolder under the data source (e.g., \code{"Absenteeism"} under \code{"CDE"}). Required if path is NULL. Case-insensitive; common synonyms accepted.}
 
 \item{data_description}{A short description of the dataset (e.g., \code{"Chronic absenteeism rates by subgroup"}).}
 
