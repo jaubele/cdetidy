@@ -46,7 +46,8 @@ Can be run on a full dataset or a sampled subset to improve performance on large
 <span>  <span class="va">key_cols</span>,</span>
 <span>  sample_n <span class="op">=</span> <span class="fl">10000</span>,</span>
 <span>  full_run <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  seed <span class="op">=</span> <span class="fl">1234</span></span>
+<span>  seed <span class="op">=</span> <span class="fl">1234</span>,</span>
+<span>  show_examples <span class="op">=</span> <span class="fl">10</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -72,6 +73,10 @@ Can be run on a full dataset or a sampled subset to improve performance on large
 
 <dt id="arg-seed">seed<a class="anchor" aria-label="anchor" href="#arg-seed"></a></dt>
 <dd><p>An integer used to seed the random sample (only applies if `full_run = FALSE`). Default is 1234.</p></dd>
+
+
+<dt id="arg-show-examples">show_examples<a class="anchor" aria-label="anchor" href="#arg-show-examples"></a></dt>
+<dd><p>Integer. If duplicates are found, print up to this many example offending key combinations (after de-duplicating). Set to 0 to suppress examples. Default is 10.</p></dd>
 
 </dl></div>
     <div class="section level2">
