@@ -2,7 +2,7 @@ Package: cdetidy
 Title: Tools for Working with CDE Datasets
 Version: 0.1.0
 Authors@R: c(
-  person("Joseph", "Aubele", role = c("aut", "cre")),
+  person("Joseph", "Aubele", email = "jaubele@ocde.us", role = c("aut", "cre")),
   person("Caleb", "Mitchell", role = "aut"),
   person("Aubrey", "Roy", role = "aut"))
 Description: Tools for classification, labeling, schema generation, and export of public CDE datasets.
