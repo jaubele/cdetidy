@@ -27,13 +27,13 @@ export_with_schema_warehouse(
 \arguments{
 \item{data}{A data frame to be exported and documented.}
 
-\item{path}{Optional. The file path where the data will be saved. If \code{NULL}, the path is generated internally.}
+\item{path}{Optional. The file path where the data will be saved. If `NULL`, the path is generated internally.}
 
 \item{table_name}{A valid SQL-style name for the exported table.}
 
 \item{data_year}{A 4-digit string or number indicating the year of the data.}
 
-\item{data_source}{A short string describing the source of the data (e.g., \code{"CDE"}, \code{"SBAC"}).}
+\item{data_source}{A short string describing the source of the data (e.g., `"CDE"`, `"SBAC"`).}
 
 \item{data_description}{A human-readable description of the dataset being exported.}
 
@@ -43,7 +43,7 @@ export_with_schema_warehouse(
 
 \item{char_cols}{Character vector of column names to force as character during export. Defaults to common CDE identifiers.}
 
-\item{compress}{Logical. If \code{TRUE}, exports the file as \code{.csv.gz}. Default is \code{FALSE}.}
+\item{compress}{Logical. If `TRUE`, exports the file as `.csv.gz`. Default is `FALSE`.}
 
 \item{n_check}{Integer. Number of rows to print during export preview. Default is 6.}
 
@@ -57,13 +57,13 @@ export_with_schema_warehouse(
 
 \item{canonical_table_id}{Optional. A unique identifier used for linking across data products.}
 
-\item{dimension_type}{Optional. A label to describe the type of dimension (e.g., \code{"student"}, \code{"school"}).}
+\item{dimension_type}{Optional. A label to describe the type of dimension (e.g., `"student"`, `"school"`).}
 }
 \value{
-Invisibly returns \code{NULL}. Files are written to disk and schema is logged to the warehouse schema log.
+Invisibly returns `NULL`. Files are written to disk and schema is logged to the warehouse schema log.
 }
 \description{
 Safely exports a dataset to the warehouse-ready location and logs its schema metadata to a warehouse-specific SQL schema log.
-This function wraps both \code{safe_fwrite_warehouse()} and \code{sql_schema_log_warehouse()} to ensure standardized output
+This function wraps both `safe_fwrite_warehouse()` and `sql_schema_log_warehouse()` to ensure standardized output
 and metadata tracking for the data warehouse pipeline.
 }

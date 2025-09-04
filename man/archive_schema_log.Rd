@@ -15,7 +15,7 @@ archive_schema_log(year, overwrite = FALSE)
 (Invisibly) the path to the archived schema log file as a character string.
 }
 \description{
-Copies the current \code{primary_sql_schema_log.csv} from the live folder
+Copies the current `primary_sql_schema_log.csv` from the live folder
 to an archive folder with the year included in the filename. Prevents
 overwriting unless explicitly allowed.
 }

@@ -8,20 +8,16 @@ fk_constraint_names(schema_flagged)
 }
 \arguments{
 \item{schema_flagged}{A data frame containing schema metadata, with columns:
-\itemize{
-\item \code{table_name}: name of the table
-\item \code{column_name}: name of the column
-\item \code{is_primary_key}: "YES" or "NO" for PK status
-\item \code{is_foreign_key}: "YES" or "NO" for FK status
-\item \code{foreign_key_ref}: reference target(s), formatted like \code{"table(col)"} or \code{"table1(col1) | table2(col2)"}
-}}
+- `table_name`: name of the table
+- `column_name`: name of the column
+- `is_primary_key`: "YES" or "NO" for PK status
+- `is_foreign_key`: "YES" or "NO" for FK status
+- `foreign_key_ref`: reference target(s), formatted like `"table(col)"` or `"table1(col1) | table2(col2)"`}
 }
 \value{
 A character vector of foreign key constraint names. Each name follows the format:
-\itemize{
-\item For single-column FKs: \verb{fk_<child_table>_<child_column>_<ref_table>}
-\item For multi-column composite FKs: \verb{fk_<child_table>_<ref_table>_<ordered_child_cols>}
-}
+- For single-column FKs: `fk_<child_table>_<child_column>_<ref_table>`
+- For multi-column composite FKs: `fk_<child_table>_<ref_table>_<ordered_child_cols>`
 }
 \description{
 Constructs constraint names for foreign keys based on a flagged schema data frame, handling
@@ -29,11 +25,9 @@ both single-column and multi-column (composite) foreign key relationships. Retur
 vector of cleaned and deterministic names suitable for use in SQL table creation scripts.
 }
 \details{
-\itemize{
-\item Constraint names are made SQL-safe by replacing invalid characters with underscores.
-\item Composite constraints are only generated if the referenced columns match the full PK of the referenced table.
-\item Duplicate or malformed references will result in an error.
-}
+- Constraint names are made SQL-safe by replacing invalid characters with underscores.
+- Composite constraints are only generated if the referenced columns match the full PK of the referenced table.
+- Duplicate or malformed references will result in an error.
 }
 \examples{
 \dontrun{

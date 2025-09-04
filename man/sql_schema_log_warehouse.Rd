@@ -25,39 +25,35 @@ sql_schema_log_warehouse(
 
 \item{data_year}{A 4-digit year indicating the data vintage.}
 
-\item{data_source}{A string identifying the data source (must be \code{"Assessment"}, \code{"CDE"}, or \code{"Dashboard"}).}
+\item{data_source}{A string identifying the data source (must be `"Assessment"`, `"CDE"`, or `"Dashboard"`).}
 
-\item{user_note}{A short note describing the data (must include \code{"fact"} or \code{"dim"}).}
+\item{user_note}{A short note describing the data (must include `"fact"` or `"dim"`).}
 
-\item{dim_description}{Optional. A short label describing the dimension content (e.g., \code{"race_ethnicity"}).}
+\item{dim_description}{Optional. A short label describing the dimension content (e.g., `"race_ethnicity"`).}
 
 \item{max_char}{Maximum length to assign to character columns (default is 255).}
 
 \item{primary_key}{A character vector of column(s) that make up the primary key.}
 
-\item{foreign_keys}{A named character vector like \code{c("column_name" = "ref_table")}.}
+\item{foreign_keys}{A named character vector like `c("column_name" = "ref_table")`.}
 
-\item{canonical_table_id}{Optional. A unique ID for the table. Defaults to \code{table_name}.}
+\item{canonical_table_id}{Optional. A unique ID for the table. Defaults to `table_name`.}
 
-\item{dimension_type}{Optional. One of \code{"universal"}, \code{"annualized"}, or \code{"other"} (used only for dimension tables).}
+\item{dimension_type}{Optional. One of `"universal"`, `"annualized"`, or `"other"` (used only for dimension tables).}
 }
 \value{
 A tibble containing the schema definition for the input data. The result is also written to:
-\itemize{
-\item The central schema log: \verb{T:/Data Warehouse/schema_files/primary_sql_schema_log.csv}
-\item An individual schema file by table: \verb{T:/Data Warehouse/schema_files/<year>/<source>/<fact|dim>/<table>_schema.csv}
-}
+- The central schema log: `T:/Data Warehouse/schema_files/primary_sql_schema_log.csv`
+- An individual schema file by table: `T:/Data Warehouse/schema_files/<year>/<source>/<fact|dim>/<table>_schema.csv`
 }
 \description{
 Builds a schema definition table from a data frame by inspecting its column types, nullability,
-and primary/foreign key indicators. The schema is saved to a central log (\code{primary_sql_schema_log.csv})
+and primary/foreign key indicators. The schema is saved to a central log (`primary_sql_schema_log.csv`)
 and to an individual table-level schema file.
 }
 \details{
-\itemize{
-\item Infers SQL column types (\code{VARCHAR}, \code{INT}, \code{DECIMAL}, etc.) based on data values.
-\item Enforces uniqueness and completeness of primary key.
-\item Validates format and existence of foreign key mappings.
-\item Updates the central log by replacing existing entries for the same \code{canonical_table_id}.
-}
+- Infers SQL column types (`VARCHAR`, `INT`, `DECIMAL`, etc.) based on data values.
+- Enforces uniqueness and completeness of primary key.
+- Validates format and existence of foreign key mappings.
+- Updates the central log by replacing existing entries for the same `canonical_table_id`.
 }

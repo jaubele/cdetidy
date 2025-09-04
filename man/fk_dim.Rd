@@ -7,12 +7,12 @@
 fk_dim(name)
 }
 \arguments{
-\item{name}{A character string representing the base name of the dimension (e.g., \code{"student"}, \code{"school"}).}
+\item{name}{A character string representing the base name of the dimension (e.g., `"student"`, `"school"`).}
 }
 \value{
-A character string with \code{"_dim"} appended (e.g., \code{"student_dim"}).
+A character string with `"_dim"` appended (e.g., `"student_dim"`).
 }
 \description{
-Appends the suffix \code{"_dim"} to a given base name, typically to represent a foreign key column
+Appends the suffix `"_dim"` to a given base name, typically to represent a foreign key column
 that links to a dimension table.
 }

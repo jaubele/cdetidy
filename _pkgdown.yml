@@ -1,5 +1,17 @@
+author:
+  - name: Joseph Aubele
+    affiliation: Orange County Department of Education
+  - name: Caleb Mitchell
+    affiliation: Orange County Department of Education
+  - name: Aubrey Roy
+    affiliation: Orange County Department of Education
+url: https://github.com/jaubele/cdetidy
+
+template:
+  bootstrap: 5
+
 reference:
-  - title: "Classification & Group Labeling"
+  - title: Classification & Group Labeling
     desc: "Functions for applying classification maps and labeling group variables."
     contents:
       - assessment_files_group_labeling
@@ -8,7 +20,7 @@ reference:
       - class_map_to_dim
       - validate_group_mapping_tabyl
 
-  - title: "CDS Code Utilities"
+  - title: CDS Code Utilities
     desc: "Tools for padding, expanding, and resolving CDS codes."
     contents:
       - pad_cds_codes
@@ -18,7 +30,7 @@ reference:
       - replace_conflicting_cds
       - resolve_conflicting_cds
 
-  - title: "Schema & SQL Generation"
+  - title: Schema & SQL Generation
     desc: "Tools for generating and validating SQL table structures and constraints."
     contents:
       - sql_schema_log
@@ -30,7 +42,7 @@ reference:
       - fk_constraint_names
       - fk_dim
 
-  - title: "Export & Logging"
+  - title: Export & Logging
     desc: "Functions for safely writing and logging fact/dimension tables."
     contents:
       - safe_fwrite
@@ -38,8 +50,10 @@ reference:
       - export_with_schema
       - export_with_schema_warehouse
       - sql_schema_log_warehouse
+      - filter_schema_sources
+      - normalize_for_compare
 
-  - title: "Validation Utilities"
+  - title: Validation Utilities
     desc: "Functions to validate keys, suppression, and SQL-safe names."
     contents:
       - validate_primary_key
@@ -47,24 +61,21 @@ reference:
       - check_suppression_dependency
       - compare_variable_names
 
-  - title: "Dimension Management"
+  - title: Dimension Management
     desc: "Helpers for identifying, cleaning, or clearing dimension-like objects."
     contents:
       - get_dim_objects
       - clear_dim_objects
 
-  - title: "File & Test Utilities"
+  - title: File & Test Utilities
     desc: "Utilities for file selection, comparison, and test file splitting."
     contents:
       - files_by_keywords
       - load_and_compare_files
       - split_sbac_test
 
-  - title: "Script Orchestration"
+  - title: Script Orchestration
     desc: "High-level orchestration for warehouse build and SQL automation."
     contents:
       - generate_sql_script
       - archive_schema_log
-
-
-

@@ -9,24 +9,22 @@ cde_files_group_labeling(df, var_names, output_names)
 \arguments{
 \item{df}{A data frame containing one or more columns to classify.}
 
-\item{var_names}{A character vector of column names in \code{df} to which the classification should be applied.}
+\item{var_names}{A character vector of column names in `df` to which the classification should be applied.}
 
-\item{output_names}{A character vector of prefixes for the new output columns. Must be the same length as \code{var_names}.}
+\item{output_names}{A character vector of prefixes for the new output columns. Must be the same length as `var_names`.}
 }
 \value{
 The original data frame with new columns added for each input variable:
-\verb{<prefix>_label}, \verb{<prefix>_num}, \verb{<prefix>_group_num}, and \verb{<prefix>_group}.
+`<prefix>_label`, `<prefix>_num`, `<prefix>_group_num`, and `<prefix>_group`.
 }
 \description{
 Applies a hardcoded classification map to one or more columns in a CDE dataset. For each input
 column, the function generates new output columns using user-defined prefixes:
-\verb{<prefix>_label}, \verb{<prefix>_num}, \verb{<prefix>_group_num}, and \verb{<prefix>_group}.
+`<prefix>_label`, `<prefix>_num`, `<prefix>_group_num`, and `<prefix>_group`.
 Interactive prompts are used to resolve classification values that appear in multiple entries.
 }
 \details{
-\itemize{
-\item Classification values (e.g., \code{"RB"}, \code{"RE_B"}, \code{"GR46"}) are matched to a hardcoded classification map.
-\item The function interactively prompts the user to resolve duplicates when a value appears in more than one group.
-\item An error is raised if any input values are unmatched.
-}
+- Classification values (e.g., `"RB"`, `"RE_B"`, `"GR46"`) are matched to a hardcoded classification map.
+- The function interactively prompts the user to resolve duplicates when a value appears in more than one group.
+- An error is raised if any input values are unmatched.
 }

@@ -8,27 +8,23 @@ sql_table_coder(schema_flagged)
 }
 \arguments{
 \item{schema_flagged}{A data frame representing schema metadata. Must include the following columns:
-\itemize{
-\item \code{table_name}, \code{column_name}, \code{sql_type}, \code{null_flag}
-\item \code{is_primary_key}, \code{is_foreign_key}, \code{foreign_key_ref}
-\item \code{user_note}, \code{user}, \code{timestamp}, \code{rebuild_flag}
-}}
+- `table_name`, `column_name`, `sql_type`, `null_flag`
+- `is_primary_key`, `is_foreign_key`, `foreign_key_ref`
+- `user_note`, `user`, `timestamp`, `rebuild_flag`}
 }
 \value{
 A character vector of SQL code blocks, one per table, formatted with metadata comments and valid T-SQL.
 }
 \description{
-Converts a flagged schema log (e.g., from \code{sql_schema_log()} or \code{flag_schema_changes()})
-into SQL \verb{CREATE TABLE} statements for each table in the dataset. Includes metadata headers,
+Converts a flagged schema log (e.g., from `sql_schema_log()` or `flag_schema_changes()`)
+into SQL `CREATE TABLE` statements for each table in the dataset. Includes metadata headers,
 optional drop-and-rebuild behavior, and primary key constraints.
 }
 \details{
-\itemize{
-\item Each block is prefixed with a detailed comment including who created the schema, when, and for what purpose.
-\item If any column in a table has \code{rebuild_flag == 1}, the block starts with \verb{DROP TABLE IF EXISTS}.
-\item Otherwise, the block is wrapped in an \verb{IF NOT EXISTS} check to avoid duplicate creation.
-\item Primary keys are included via \verb{CONSTRAINT pk_<table_name> PRIMARY KEY (...)}.
-}
+- Each block is prefixed with a detailed comment including who created the schema, when, and for what purpose.
+- If any column in a table has `rebuild_flag == 1`, the block starts with `DROP TABLE IF EXISTS`.
+- Otherwise, the block is wrapped in an `IF NOT EXISTS` check to avoid duplicate creation.
+- Primary keys are included via `CONSTRAINT pk_<table_name> PRIMARY KEY (...)`.
 }
 \examples{
 \dontrun{

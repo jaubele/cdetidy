@@ -11,25 +11,23 @@ clear_dim_objects(
 )
 }
 \arguments{
-\item{base_string}{A string that all targeted object names should begin with (e.g., \code{"ltel19"}, \code{"sbac24"}).}
+\item{base_string}{A string that all targeted object names should begin with (e.g., `"ltel19"`, `"sbac24"`).}
 
-\item{dry_run}{Logical. If \code{TRUE}, shows which objects would be removed without actually deleting them. Default is \code{TRUE}.}
+\item{dry_run}{Logical. If `TRUE`, shows which objects would be removed without actually deleting them. Default is `TRUE`.}
 
-\item{keywords}{A character vector of substrings to match within object names. Defaults to \code{c("dim", "entit", "group", "label")}.}
+\item{keywords}{A character vector of substrings to match within object names. Defaults to `c("dim", "entit", "group", "label")`.}
 }
 \value{
-(Invisibly) A character vector of object names that matched the filters. If \code{dry_run = FALSE}, these objects are removed.
+(Invisibly) A character vector of object names that matched the filters. If `dry_run = FALSE`, these objects are removed.
 }
 \description{
-Scans the global environment for objects with names that begin with a user-defined \code{base_string}
+Scans the global environment for objects with names that begin with a user-defined `base_string`
 and contain keywords like "dim", "entit", "group", or "label". It optionally removes them or
 just displays them in a dry run. Useful for cleaning up intermediate or output objects created
 during ETL or report generation.
 }
 \details{
-\itemize{
-\item This function uses pattern matching to find "dimension-like" objects.
-\item It searches for objects in the global environment (\code{.GlobalEnv}).
-\item Useful for scripts that generate many intermediate tables for reporting or dashboarding.
-}
+- This function uses pattern matching to find "dimension-like" objects.
+- It searches for objects in the global environment (`.GlobalEnv`).
+- Useful for scripts that generate many intermediate tables for reporting or dashboarding.
 }

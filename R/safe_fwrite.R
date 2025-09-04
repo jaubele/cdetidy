@@ -11,8 +11,13 @@
 #' @param n_check Integer. Number of rows to preview after writing. Default is 6.
 #' @param log_metadata A named list containing metadata fields, including `data_year`, `data_source`, `data_description`, and `user_note`. If `NULL`, the function uses the corresponding individual arguments.
 #' @param data_year The year the data represents. Required if `log_metadata` is not supplied.
+<<<<<<< HEAD
 #' @param data_source A short label identifying the source of the data (e.g., `"CDE"`, `"Dashboard"`).
 #' @param data_type Short label used to choose the subfolder under the data source (e.g., `"Absenteeism"` under `"CDE"`). Required if path is NULL. Case-insensitive; common synonyms accepted.
+=======
+#' @param data_source A short label identifying the source of the data (e.g., `"CDE"`, `"Dashboard"`, `"Assessment"`).
+#' @param data_type A short label identifying what type of data you are writing out (e.g., "`CAST`", "`SBAC`", "`Absenteeism`", dims)
+>>>>>>> 32799a6e06203125ff4bef9f816701abc3c65dd9
 #' @param data_description A short description of the dataset (e.g., `"Chronic absenteeism rates by subgroup"`).
 #' @param user_note A note describing the nature of the export. Must include `"fact"` or `"dim"` to indicate table type.
 #' @param table_name The base name of the output table.
@@ -46,12 +51,19 @@ safe_fwrite <- function(
     dim_description = NULL,
     log_path = "export_log.csv",
     canonical_table_id = NULL,
+<<<<<<< HEAD
     dimension_type = NULL) {
 
   `%||%` <- function(x, y) if (is.null(x) || (length(x) == 1 && is.na(x))) y else x
 
   norm_token <- function(x) gsub("[^a-z0-9]+", "", tolower(trimws(as.character(x))))
 
+=======
+    dimension_type = NULL
+) {
+  `%||%` <- function(x, y) if (is.null(x) || (length(x) == 1 && is.na(x))) y else x
+  norm_token <- function(x) gsub("[^a-z0-9]+", "", tolower(trimws(as.character(x))))
+>>>>>>> 32799a6e06203125ff4bef9f816701abc3c65dd9
   title_underscore <- function(x) gsub("\\s+", "_", tools::toTitleCase(gsub("_", " ", x)))
 
   # --- catalogs & resolver ---

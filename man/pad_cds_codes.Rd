@@ -16,21 +16,21 @@ pad_cds_codes(
 \arguments{
 \item{df}{A data frame containing columns for county, district, and school codes.}
 
-\item{county_col}{The name of the county code column. Default is \code{"county_code"}.}
+\item{county_col}{The name of the county code column. Default is `"county_code"`.}
 
-\item{district_col}{The name of the district code column. Default is \code{"district_code"}.}
+\item{district_col}{The name of the district code column. Default is `"district_code"`.}
 
-\item{school_col}{The name of the school code column. Default is \code{"school_code"}.}
+\item{school_col}{The name of the school code column. Default is `"school_code"`.}
 
-\item{create_cds}{Logical. If \code{TRUE}, creates a new CDS column by concatenating the three parts. Default is \code{TRUE}.}
+\item{create_cds}{Logical. If `TRUE`, creates a new CDS column by concatenating the three parts. Default is `TRUE`.}
 
-\item{cds_col}{The name of the output CDS column if \code{create_cds = TRUE}. Default is \code{"cds"}.}
+\item{cds_col}{The name of the output CDS column if `create_cds = TRUE`. Default is `"cds"`.}
 }
 \value{
 A data frame with padded code columns and, if requested, a new CDS column.
 }
 \description{
-Ensures that \code{county_code}, \code{district_code}, and \code{school_code} are left-padded with zeros
+Ensures that `county_code`, `district_code`, and `school_code` are left-padded with zeros
 to their standard widths (2, 5, and 7 digits respectively). Optionally, generates a full
 CDS code by concatenating the padded columns.
 }

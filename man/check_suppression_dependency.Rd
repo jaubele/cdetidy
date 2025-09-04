@@ -16,18 +16,16 @@ check_suppression_dependency(
 
 \item{numeric_cols}{A character vector of column names expected to contain suppressible numeric values (e.g., counts or rates).}
 
-\item{trigger_col}{The name of the column that should control or indicate suppression (default is \code{"cohort_students"}).}
+\item{trigger_col}{The name of the column that should control or indicate suppression (default is `"cohort_students"`).}
 
-\item{return_rows}{Logical. If \code{TRUE}, the function returns suppressed row subsets in addition to the summary. Default is \code{FALSE}.}
+\item{return_rows}{Logical. If `TRUE`, the function returns suppressed row subsets in addition to the summary. Default is `FALSE`.}
 }
 \value{
 A tibble summarizing suppression dependencies, or a list containing the summary and detailed row subsets
-if \code{return_rows = TRUE}. The summary includes:
-\itemize{
-\item \code{all_trigger_suppressed_in_suppressed_rows}: Logical flag indicating if all suppressed rows also have suppression in the trigger column.
-\item \code{only_trigger_suppressed_rows_found}: Count of rows where only the trigger column is suppressed.
-\item \code{other_suppressed_when_trigger_not}: Count of rows where other columns are suppressed but the trigger column is not.
-}
+if `return_rows = TRUE`. The summary includes:
+- `all_trigger_suppressed_in_suppressed_rows`: Logical flag indicating if all suppressed rows also have suppression in the trigger column.
+- `only_trigger_suppressed_rows_found`: Count of rows where only the trigger column is suppressed.
+- `other_suppressed_when_trigger_not`: Count of rows where other columns are suppressed but the trigger column is not.
 }
 \description{
 Audits a data frame for suppression behavior (e.g., values represented by "*") across specified numeric columns.

@@ -7,29 +7,25 @@
 split_sbac_test(data, base_name)
 }
 \arguments{
-\item{data}{A data frame containing a \code{"test"} column with values \code{1} (ELA) and \code{2} (Math).}
+\item{data}{A data frame containing a `"test"` column with values `1` (ELA) and `2` (Math).}
 
 \item{base_name}{A base string used to generate object names. Resulting objects will be named
-\verb{<base_name>_ela} and \verb{<base_name>_math}.}
+`<base_name>_ela` and `<base_name>_math`.}
 }
 \value{
 Invisibly returns a list with two components:
-\itemize{
-\item \code{ela}: The subset of rows with \code{test == 1}
-\item \code{math}: The subset of rows with \code{test == 2}
-}
+- `ela`: The subset of rows with `test == 1`
+- `math`: The subset of rows with `test == 2`
 }
 \description{
-Splits a dataset with a \code{"test"} column (coded as 1 = ELA, 2 = Math) into two separate data frames.
+Splits a dataset with a `"test"` column (coded as 1 = ELA, 2 = Math) into two separate data frames.
 Assigns the resulting datasets to the global environment using names based on a user-defined base name.
 }
 \details{
-\itemize{
-\item Rows with \code{test == 1} are assumed to be ELA records; \code{test == 2} are assumed to be Math.
-\item Warnings are printed if unexpected values are present in either subset.
-\item Resulting datasets are assigned to the global environment with descriptive names.
-\item Use \code{invisible()} to suppress printing if calling programmatically.
-}
+- Rows with `test == 1` are assumed to be ELA records; `test == 2` are assumed to be Math.
+- Warnings are printed if unexpected values are present in either subset.
+- Resulting datasets are assigned to the global environment with descriptive names.
+- Use `invisible()` to suppress printing if calling programmatically.
 }
 \examples{
 \dontrun{

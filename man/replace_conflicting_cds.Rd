@@ -14,17 +14,17 @@ replace_conflicting_cds(
 \arguments{
 \item{df}{A data frame containing the CDS column and org level column to modify.}
 
-\item{conflicting_cds_df}{A data frame containing the list of conflicting CDS codes, typically returned by \code{get_conflicting_cds()}.}
+\item{conflicting_cds_df}{A data frame containing the list of conflicting CDS codes, typically returned by `get_conflicting_cds()`.}
 
-\item{cds_col}{The name of the column that contains the CDS code. Default is \code{"cds"}.}
+\item{cds_col}{The name of the column that contains the CDS code. Default is `"cds"`.}
 
-\item{org_level_col}{The name of the column that contains the org level. Default is \code{"org_level"}.}
+\item{org_level_col}{The name of the column that contains the org level. Default is `"org_level"`.}
 }
 \value{
-A data frame with updated CDS values. Adds a temporary \code{altered_cds} column that marks modified rows with \code{1}.
+A data frame with updated CDS values. Adds a temporary `altered_cds` column that marks modified rows with `1`.
 }
 \description{
-Detects CDS codes that appear at multiple organization levels and appends \code{"9999"} to the
-\code{cds} code for school-level (\code{"S"}) records, allowing the dataset to preserve uniqueness.
+Detects CDS codes that appear at multiple organization levels and appends `"9999"` to the
+`cds` code for school-level (`"S"`) records, allowing the dataset to preserve uniqueness.
 This is typically used to resolve ambiguity in CDE datasets before loading into a warehouse.
 }

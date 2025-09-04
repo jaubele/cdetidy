@@ -8,15 +8,13 @@ class_map_to_dim(entry)
 }
 \arguments{
 \item{entry}{A list containing a classification entry with the elements:
-\itemize{
-\item \code{label}: A character label (e.g., "Hispanic or Latino")
-\item \code{num}: A numeric code for the label
-\item \code{group_num}: A numeric ID for the group category
-\item \code{group}: A character name for the group category
-}}
+- `label`: A character label (e.g., "Hispanic or Latino")
+- `num`: A numeric code for the label
+- `group_num`: A numeric ID for the group category
+- `group`: A character name for the group category}
 }
 \value{
-A one-row tibble with columns: \code{demo_group}, \code{demo_group_num}, \code{demo_group_group_num}, and \code{demo_group_group}.
+A one-row tibble with columns: `demo_group`, `demo_group_num`, `demo_group_group_num`, and `demo_group_group`.
 }
 \description{
 Transforms a single list entry from a classification map into a standardized row

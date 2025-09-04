@@ -17,11 +17,11 @@ files_by_keywords(
 
 \item{keywords}{A character vector of one or more keywords to match against filenames.}
 
-\item{recursive}{Logical. If \code{TRUE}, search subdirectories as well. Default is \code{TRUE}.}
+\item{recursive}{Logical. If `TRUE`, search subdirectories as well. Default is `TRUE`.}
 
-\item{ignore_case}{Logical. If \code{TRUE}, matching is case-insensitive. Default is \code{TRUE}.}
+\item{ignore_case}{Logical. If `TRUE`, matching is case-insensitive. Default is `TRUE`.}
 
-\item{full_names}{Logical. If \code{TRUE}, returns full paths; otherwise, returns filenames only. Default is \code{TRUE}.}
+\item{full_names}{Logical. If `TRUE`, returns full paths; otherwise, returns filenames only. Default is `TRUE`.}
 }
 \value{
 A character vector of selected file paths. If the user cancels or no files match,
@@ -32,9 +32,7 @@ Searches a specified folder for filenames that match any of the given keywords,
 then presents an interactive menu for the user to select files to return.
 }
 \details{
-\itemize{
-\item The function filters files based on whether any keyword appears in the filename (not the full path).
-\item If one or more files match, the user is prompted to select files by number.
-\item If no keywords match or the user cancels, nothing is returned.
-}
+- The function filters files based on whether any keyword appears in the filename (not the full path).
+- If one or more files match, the user is prompted to select files by number.
+- If no keywords match or the user cancels, nothing is returned.
 }

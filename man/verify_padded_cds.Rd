@@ -9,29 +9,25 @@ verify_padded_cds(df, drop_parts = TRUE)
 \arguments{
 \item{df}{A data frame containing the CDS and its component columns.}
 
-\item{drop_parts}{Logical. If \code{TRUE}, removes \code{county_code}, \code{district_code}, and \code{school_code}
-after successful validation. Default is \code{TRUE}.}
+\item{drop_parts}{Logical. If `TRUE`, removes `county_code`, `district_code`, and `school_code`
+after successful validation. Default is `TRUE`.}
 }
 \value{
 Returns the input data frame (possibly with columns dropped).
-Returns \code{FALSE} (invisibly) if validation fails. Messages are printed using the \code{cli} package.
+Returns `FALSE` (invisibly) if validation fails. Messages are printed using the `cli` package.
 }
 \description{
-Checks whether CDS-related columns (\code{county_code}, \code{district_code}, \code{school_code}, and \code{cds})
+Checks whether CDS-related columns (`county_code`, `district_code`, `school_code`, and `cds`)
 are character type and have the expected number of digits (2, 5, 7, and 14, respectively).
 Optionally drops the component columns after successful validation.
 }
 \details{
-\itemize{
-\item Each column must be present, of type character, and match its expected width.
-\item The expected lengths are:
-\itemize{
-\item \code{county_code}: 2 digits
-\item \code{district_code}: 5 digits
-\item \code{school_code}: 7 digits
-\item \code{cds}: 14 digits
-}
-}
+- Each column must be present, of type character, and match its expected width.
+- The expected lengths are:
+  - `county_code`: 2 digits
+  - `district_code`: 5 digits
+  - `school_code`: 7 digits
+  - `cds`: 14 digits
 }
 \examples{
 df <- data.frame(
