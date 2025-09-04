@@ -40,13 +40,7 @@ safe_fwrite(
 
 \item{data_source}{A short label identifying the source of the data (e.g., `"CDE"`, `"Dashboard"`, `"Assessment"`).}
 
-<<<<<<< HEAD
-\item{data_type}{Short label used to choose the subfolder under the data source (e.g., \code{"Absenteeism"} under \code{"CDE"}). Required if path is NULL. Case-insensitive; common synonyms accepted.}
-
-\item{data_description}{A short description of the dataset (e.g., \code{"Chronic absenteeism rates by subgroup"}).}
-=======
 \item{data_type}{A short label identifying what type of data you are writing out (e.g., "`CAST`", "`SBAC`", "`Absenteeism`", dims)}
->>>>>>> 32799a6e06203125ff4bef9f816701abc3c65dd9
 
 \item{data_description}{A short description of the dataset (e.g., `"Chronic absenteeism rates by subgroup"`).}
 

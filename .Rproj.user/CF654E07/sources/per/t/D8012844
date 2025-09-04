@@ -1,0 +1,27 @@
+{
+    "id": "D8012844",
+    "path": "T:/Data Warehouse/Global R Scripts/REDI Front End ETL Custom Functions.R",
+    "project_path": null,
+    "type": "r_source",
+    "hash": "873130230",
+    "contents": "",
+    "dirty": false,
+    "created": 1757009876140.0,
+    "source_on_save": false,
+    "relative_order": 2,
+    "properties": {
+        "source_window_id": "",
+        "Source": "Source",
+        "cursorPosition": "704,31",
+        "scrollLine": "704",
+        "docOutlineVisible": "1"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1757016785,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1757016785093,
+    "read_only": false,
+    "read_only_alternatives": []
+}

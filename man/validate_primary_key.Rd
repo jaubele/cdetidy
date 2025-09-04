@@ -22,13 +22,9 @@ validate_primary_key(
 
 \item{full_run}{Logical. If `TRUE`, checks the entire dataset. Default is `FALSE`.}
 
-<<<<<<< HEAD
-\item{seed}{An integer used to seed the random sample (only applies if \code{full_run = FALSE}). Default is 1234.}
+\item{seed}{An integer used to seed the random sample (only applies if `full_run = FALSE`). Default is 1234.}
 
 \item{show_examples}{Integer. If duplicates are found, print up to this many example offending key combinations (after de-duplicating). Set to 0 to suppress examples. Default is 10.}
-=======
-\item{seed}{An integer used to seed the random sample (only applies if `full_run = FALSE`). Default is 1234.}
->>>>>>> 32799a6e06203125ff4bef9f816701abc3c65dd9
 }
 \value{
 Invisibly returns `NULL`. Prints a success or failure message indicating whether the key uniquely identifies rows.
