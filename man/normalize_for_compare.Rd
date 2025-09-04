@@ -8,32 +8,26 @@ normalize_for_compare(df)
 }
 \arguments{
 \item{df}{A data frame containing at least the following columns:
-\itemize{
-\item \code{table_name}
-\item \code{column_name}
-\item \code{sql_type}
-\item \code{null_flag}
-\item \code{is_primary_key}
-}}
+- `table_name`
+- `column_name`
+- `sql_type`
+- `null_flag`
+- `is_primary_key`}
 }
 \value{
 A data frame with the same columns but with normalized values:
-\itemize{
-\item Trims whitespace
-\item Converts SQL types like \code{decimal(p,0)} and \code{int(n)} to \code{INT}
-\item Converts all \code{sql_type}, \code{null_flag}, and \code{is_primary_key} fields to uppercase
-}
+- Trims whitespace
+- Converts SQL types like `decimal(p,0)` and `int(n)` to `INT`
+- Converts all `sql_type`, `null_flag`, and `is_primary_key` fields to uppercase
 }
 \description{
 Standardizes key fields in a schema metadata data frame so that column-by-column comparisons
 (e.g., across years) are reliable. This function is typically used before schema diffs or rebuild flagging.
 }
 \details{
-\itemize{
-\item SQL types are uppercased and simplified for consistent matching
-\item NULL flags are standardized to either \code{"NULL"} or \code{"NOT NULL"}
-\item Primary key flags are standardized to \code{"YES"} or \code{"NO"}
-}
+- SQL types are uppercased and simplified for consistent matching
+- NULL flags are standardized to either `"NULL"` or `"NOT NULL"`
+- Primary key flags are standardized to `"YES"` or `"NO"`
 }
 \examples{
 \dontrun{

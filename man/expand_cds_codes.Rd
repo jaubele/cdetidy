@@ -15,13 +15,13 @@ expand_cds_codes(
 \arguments{
 \item{df}{A data frame containing a column with full CDS codes.}
 
-\item{cds_col}{The name of the CDS column. Default is \code{"cds"}.}
+\item{cds_col}{The name of the CDS column. Default is `"cds"`.}
 
-\item{county_col}{The name of the column to store the county code. Default is \code{"county_code"}.}
+\item{county_col}{The name of the column to store the county code. Default is `"county_code"`.}
 
-\item{district_col}{The name of the column to store the district code. Default is \code{"district_code"}.}
+\item{district_col}{The name of the column to store the district code. Default is `"district_code"`.}
 
-\item{school_col}{The name of the column to store the school code. Default is \code{"school_code"}.}
+\item{school_col}{The name of the column to store the school code. Default is `"school_code"`.}
 }
 \value{
 A data frame with new columns for county, district, and school codes.

@@ -14,13 +14,13 @@ validate_group_mapping_tabyl(data, old_col, new_col)
 \item{new_col}{The unquoted name of the column representing the new mapped values.}
 }
 \value{
-Invisibly returns \code{TRUE} if the mapping is one-to-one; otherwise \code{FALSE}.
+Invisibly returns `TRUE` if the mapping is one-to-one; otherwise `FALSE`.
 Prints a success message if valid, or detailed messages if violations are found.
 }
 \description{
-Checks whether each unique value in the \code{old_col} maps to exactly one unique value in the \code{new_col},
+Checks whether each unique value in the `old_col` maps to exactly one unique value in the `new_col`,
 and vice versa. Useful for validating recode tables, lookup joins, or classification maps before applying them.
-Uses \code{janitor::tabyl()} to cross-tabulate values and ensures each row and column contains only one match.
+Uses `janitor::tabyl()` to cross-tabulate values and ensures each row and column contains only one match.
 }
 \examples{
 \dontrun{

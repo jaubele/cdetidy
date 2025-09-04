@@ -7,3 +7,5 @@
 docs
 package_loading.R
 .yml
+.gitignore
+.Rbuildignore

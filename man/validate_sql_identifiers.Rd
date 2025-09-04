@@ -13,26 +13,22 @@ validate_sql_identifiers(
 \arguments{
 \item{name_vec}{A character vector of names to validate.}
 
-\item{type}{A string indicating what type of identifier is being checked. Must be \code{"column"} or \code{"table"}. Default is \code{"column"}.}
+\item{type}{A string indicating what type of identifier is being checked. Must be `"column"` or `"table"`. Default is `"column"`.}
 
 \item{max_length}{Maximum number of characters allowed in a name. Default is 63.}
 }
 \value{
-Invisibly returns \code{NULL}. Raises an error if any invalid names are found.
+Invisibly returns `NULL`. Raises an error if any invalid names are found.
 }
 \description{
 Checks that each name in a character vector follows SQL identifier rules:
-\itemize{
-\item Starts with a letter or underscore
-\item Contains only letters, numbers, or underscores
-\item Does not exceed a specified maximum length
-}
+- Starts with a letter or underscore
+- Contains only letters, numbers, or underscores
+- Does not exceed a specified maximum length
 }
 \details{
-\itemize{
-\item This function enforces safe naming for SQL Server and PostgreSQL-style identifiers.
-\item Colored error messages are printed for easier debugging in interactive sessions.
-}
+- This function enforces safe naming for SQL Server and PostgreSQL-style identifiers.
+- Colored error messages are printed for easier debugging in interactive sessions.
 }
 \examples{
 validate_sql_identifiers(c("student_id", "_school_code"))  # ✅ valid

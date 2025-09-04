@@ -8,28 +8,24 @@ sql_foreign_key_coder(schema_flagged)
 }
 \arguments{
 \item{schema_flagged}{A data frame containing schema metadata, including the following columns:
-\itemize{
-\item \code{table_name}: Name of the child table
-\item \code{column_name}: Foreign key column in the child table
-\item \code{is_foreign_key}: Logical or "YES"/"NO" string
-\item \code{foreign_key_ref}: Reference in \code{"table(column)"} or \code{"table1(col1) | table2(col2)"} format
-\item \code{is_primary_key}: Indicates primary key status for composite detection
-}}
+- `table_name`: Name of the child table
+- `column_name`: Foreign key column in the child table
+- `is_foreign_key`: Logical or "YES"/"NO" string
+- `foreign_key_ref`: Reference in `"table(column)"` or `"table1(col1) | table2(col2)"` format
+- `is_primary_key`: Indicates primary key status for composite detection}
 }
 \value{
-A character vector of SQL \verb{ALTER TABLE} statements to define foreign key constraints.
-Each statement begins with an \verb{IF NOT EXISTS} check to avoid duplicate creation.
+A character vector of SQL `ALTER TABLE` statements to define foreign key constraints.
+Each statement begins with an `IF NOT EXISTS` check to avoid duplicate creation.
 }
 \description{
-Based on a schema metadata data frame (e.g., from \code{sql_schema_log()}), this function generates
-T-SQL \verb{ALTER TABLE} statements to define foreign key relationships. It supports both
+Based on a schema metadata data frame (e.g., from `sql_schema_log()`), this function generates
+T-SQL `ALTER TABLE` statements to define foreign key relationships. It supports both
 single-column and composite key relationships and avoids duplicate constraint creation using
-\verb{IF NOT EXISTS} checks. The output is suitable for use in post-load SQL warehouse scripts.
+`IF NOT EXISTS` checks. The output is suitable for use in post-load SQL warehouse scripts.
 }
 \details{
-\itemize{
-\item Composite keys are supported if the referenced columns match the full PK of the referenced table.
-\item Names are cleaned for SQL compatibility using safe alphanumeric formatting.
-\item The function uses \code{glue::glue()} for string assembly and assumes the presence of \code{sql_ident()} for quoting identifiers.
-}
+- Composite keys are supported if the referenced columns match the full PK of the referenced table.
+- Names are cleaned for SQL compatibility using safe alphanumeric formatting.
+- The function uses `glue::glue()` for string assembly and assumes the presence of `sql_ident()` for quoting identifiers.
 }

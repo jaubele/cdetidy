@@ -26,38 +26,38 @@ safe_fwrite_warehouse(
 \arguments{
 \item{data}{A data frame to be exported.}
 
-\item{path}{Optional. A full file path to write the CSV file. If \code{NULL}, a default path is constructed using metadata fields.}
+\item{path}{Optional. A full file path to write the CSV file. If `NULL`, a default path is constructed using metadata fields.}
 
-\item{char_cols}{A character vector of column names to force as character before export. Defaults to key ID fields (\code{cds}, \code{county_code}, etc.).}
+\item{char_cols}{A character vector of column names to force as character before export. Defaults to key ID fields (`cds`, `county_code`, etc.).}
 
-\item{compress}{Logical. If \code{TRUE}, writes the file as a gzipped \code{.csv.gz}. Default is \code{FALSE}.}
+\item{compress}{Logical. If `TRUE`, writes the file as a gzipped `.csv.gz`. Default is `FALSE`.}
 
-\item{n_check}{Number of rows to preview (with \code{fread()}) after writing. Default is 6.}
+\item{n_check}{Number of rows to preview (with `fread()`) after writing. Default is 6.}
 
-\item{log_metadata}{Optional. A named list containing key metadata: \code{data_year}, \code{data_source}, \code{data_description}, \code{user_note}.}
+\item{log_metadata}{Optional. A named list containing key metadata: `data_year`, `data_source`, `data_description`, `user_note`.}
 
-\item{data_year}{Data year (numeric or character) — required if \code{log_metadata} is not supplied.}
+\item{data_year}{Data year (numeric or character) — required if `log_metadata` is not supplied.}
 
-\item{data_source}{A string describing the data source (e.g., \code{"CDE"}, \code{"Dashboard"}).}
+\item{data_source}{A string describing the data source (e.g., `"CDE"`, `"Dashboard"`).}
 
 \item{data_type}{A string describing the specific data type/origin (e.g., CAST, SBAC, Absenteeism, dim)}
 
-\item{data_description}{A short description of the dataset (e.g., \code{"Absenteeism summary by subgroup"}).}
+\item{data_description}{A short description of the dataset (e.g., `"Absenteeism summary by subgroup"`).}
 
-\item{user_note}{A comment describing the export context (must include \code{"fact"} or \code{"dim"} to infer table type).}
+\item{user_note}{A comment describing the export context (must include `"fact"` or `"dim"` to infer table type).}
 
 \item{table_name}{Base name for the output table.}
 
 \item{dim_description}{Optional. A short, clean label for the dimension table (used in the file name).}
 
-\item{log_path}{Path to the export log CSV file. Default is \code{"export_log.csv"} within the warehouse structure.}
+\item{log_path}{Path to the export log CSV file. Default is `"export_log.csv"` within the warehouse structure.}
 
-\item{canonical_table_id}{Optional. A unique identifier for the export record. Defaults to \code{table_name}.}
+\item{canonical_table_id}{Optional. A unique identifier for the export record. Defaults to `table_name`.}
 
-\item{dimension_type}{Optional. Type of dimension table (\code{"universal"}, \code{"annualized"}, or \code{"other"}).}
+\item{dimension_type}{Optional. Type of dimension table (`"universal"`, `"annualized"`, or `"other"`).}
 }
 \value{
-Invisibly returns \code{NULL}. The function writes the CSV and appends (or updates) a log entry.
+Invisibly returns `NULL`. The function writes the CSV and appends (or updates) a log entry.
 }
 \description{
 Exports a data frame to a standardized warehouse folder structure (e.g., T drive), ensures
@@ -66,13 +66,11 @@ metadata to a centralized export log. The function enforces expected naming and 
 conventions for OCDE’s data warehouse and supports both fact and dimension tables.
 }
 \details{
-\itemize{
-\item Constructs a file name of the form: \verb{<table_name>_<dim_description>_<fact|dim>.csv}
-\item Ensures ID columns (e.g., \code{cds}) are properly coerced to character
-\item Automatically creates subdirectories if they don't exist
-\item Overwrites an existing log entry if the \code{canonical_table_id} matches
-}
+- Constructs a file name of the form: `<table_name>_<dim_description>_<fact|dim>.csv`
+- Ensures ID columns (e.g., `cds`) are properly coerced to character
+- Automatically creates subdirectories if they don't exist
+- Overwrites an existing log entry if the `canonical_table_id` matches
 }
 \seealso{
-\code{\link[=safe_fwrite]{safe_fwrite()}} for the general version that is not warehouse-specific.
+[safe_fwrite()] for the general version that is not warehouse-specific.
 }

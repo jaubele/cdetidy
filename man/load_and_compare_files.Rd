@@ -25,31 +25,31 @@ load_and_compare_files(
 
 \item{keywords}{A character vector of keywords to match filenames against.}
 
-\item{join_method}{Join strategy to use. One of \code{"bind_rows"} (default), \code{"left_join"}, or \code{"full_join"}.}
+\item{join_method}{Join strategy to use. One of `"bind_rows"` (default), `"left_join"`, or `"full_join"`.}
 
-\item{by}{If using a join method (not \code{bind_rows}), a character vector of join keys. Required for joins.}
+\item{by}{If using a join method (not `bind_rows`), a character vector of join keys. Required for joins.}
 
-\item{recursive}{Logical. If \code{TRUE}, search subdirectories. Default is \code{TRUE}.}
+\item{recursive}{Logical. If `TRUE`, search subdirectories. Default is `TRUE`.}
 
-\item{ignore_case}{Logical. If \code{TRUE}, ignore case when matching filenames. Default is \code{TRUE}.}
+\item{ignore_case}{Logical. If `TRUE`, ignore case when matching filenames. Default is `TRUE`.}
 
-\item{full_names}{Logical. If \code{TRUE}, return full file paths. Default is \code{TRUE}.}
+\item{full_names}{Logical. If `TRUE`, return full file paths. Default is `TRUE`.}
 
-\item{require_approval_on_diff}{Logical. If \code{TRUE} and differences in column names/order are found, prompts for user confirmation. Default is \code{TRUE}.}
+\item{require_approval_on_diff}{Logical. If `TRUE` and differences in column names/order are found, prompts for user confirmation. Default is `TRUE`.}
 
-\item{force}{Logical. If \code{TRUE}, override prompts and proceed even when discrepancies are found. Default is \code{FALSE}.}
+\item{force}{Logical. If `TRUE`, override prompts and proceed even when discrepancies are found. Default is `FALSE`.}
 
-\item{encoding}{Optional. Encoding to use when reading files (e.g., \code{"UTF-8"}). Default is \code{"UTF-8"}.}
+\item{encoding}{Optional. Encoding to use when reading files (e.g., `"UTF-8"`). Default is `"UTF-8"`.}
 
-\item{id_col}{Optional. If provided, a column will be added when using \code{bind_rows} to indicate source file names.}
+\item{id_col}{Optional. If provided, a column will be added when using `bind_rows` to indicate source file names.}
 
-\item{show_compare_details}{Logical. If \code{TRUE}, prints detailed column comparison results. Default is \code{TRUE}.}
+\item{show_compare_details}{Logical. If `TRUE`, prints detailed column comparison results. Default is `TRUE`.}
 
-\item{also_run_compare_function}{Logical. If \code{TRUE}, and the function \code{compare_variable_names()} exists, it will be called for each file pair.}
+\item{also_run_compare_function}{Logical. If `TRUE`, and the function `compare_variable_names()` exists, it will be called for each file pair.}
 }
 \value{
-A data frame created by joining the selected files (if no discrepancies) or \code{NULL} if discrepancies are found and approval is denied.
-If \code{bind_rows} is used with \code{id_col}, the output will include a source ID column.
+A data frame created by joining the selected files (if no discrepancies) or `NULL` if discrepancies are found and approval is denied.
+If `bind_rows` is used with `id_col`, the output will include a source ID column.
 }
 \description{
 Searches a folder for files matching given keywords, loads them into memory,
@@ -58,9 +58,7 @@ using one of several join methods. Designed for validating files before merging
 in an ETL or QA process.
 }
 \details{
-\itemize{
-\item Forces select columns (e.g., \code{"cds"}, \code{"county_code"}, etc.) to character type on load, if present.
-\item Normalizes character encodings to UTF-8.
-\item Prompts user to resolve column mismatches unless \code{force = TRUE} or run non-interactively.
-}
+- Forces select columns (e.g., `"cds"`, `"county_code"`, etc.) to character type on load, if present.
+- Normalizes character encodings to UTF-8.
+- Prompts user to resolve column mismatches unless `force = TRUE` or run non-interactively.
 }

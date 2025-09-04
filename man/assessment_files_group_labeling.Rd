@@ -9,13 +9,13 @@ assessment_files_group_labeling(df, var_names, output_names)
 \arguments{
 \item{df}{A data frame containing one or more columns to classify.}
 
-\item{var_names}{A character vector of column names in \code{df} to which the classification should be applied.}
+\item{var_names}{A character vector of column names in `df` to which the classification should be applied.}
 
-\item{output_names}{A character vector of prefixes for new output columns. Must be the same length as \code{var_names}.}
+\item{output_names}{A character vector of prefixes for new output columns. Must be the same length as `var_names`.}
 }
 \value{
 The original data frame with new columns added for each input variable:
-\verb{<prefix>_label}, \verb{<prefix>_num}, \verb{<prefix>_group_num}, and \verb{<prefix>_group}.
+`<prefix>_label`, `<prefix>_num`, `<prefix>_group_num`, and `<prefix>_group`.
 }
 \description{
 This function applies a hardcoded classification map to one or more columns in an assessment dataset.
@@ -25,9 +25,7 @@ appear across multiple classifications. Grade values are temporarily recoded to 
 then restored after mapping is complete.
 }
 \details{
-\itemize{
-\item Values in the "grade" column are temporarily recoded to match expected numeric keys in the classification map.
-\item The function will stop and report any unmatched values.
-\item Duplicate values across multiple classification entries will prompt the user to choose which label to assign.
-}
+- Values in the "grade" column are temporarily recoded to match expected numeric keys in the classification map.
+- The function will stop and report any unmatched values.
+- Duplicate values across multiple classification entries will prompt the user to choose which label to assign.
 }

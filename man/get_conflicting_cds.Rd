@@ -9,12 +9,12 @@ get_conflicting_cds(df, cds_col = "cds", org_level_col = "org_level")
 \arguments{
 \item{df}{A data frame containing at least two columns: a CDS code and an organization level.}
 
-\item{cds_col}{A string indicating the column name that contains the CDS code. Default is \code{"cds"}.}
+\item{cds_col}{A string indicating the column name that contains the CDS code. Default is `"cds"`.}
 
-\item{org_level_col}{A string indicating the column name that contains the organization level. Default is \code{"org_level"}.}
+\item{org_level_col}{A string indicating the column name that contains the organization level. Default is `"org_level"`.}
 }
 \value{
-A data frame with one row per conflicting CDS code and a column \code{unique_org_levels}
+A data frame with one row per conflicting CDS code and a column `unique_org_levels`
 indicating how many org levels were found for each code.
 }
 \description{

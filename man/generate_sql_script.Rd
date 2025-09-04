@@ -14,15 +14,15 @@ generate_sql_script(
 \arguments{
 \item{prior_year}{A 4-digit year (numeric or character) used to locate the archived schema log for comparison.}
 
-\item{combined_folder}{A string that names the folder containing flat files to be loaded (e.g., \code{"2019_2024"}).}
+\item{combined_folder}{A string that names the folder containing flat files to be loaded (e.g., `"2019_2024"`).}
 
-\item{data_source}{A string indicating the source category (\code{"assessment"}, \code{"cde"}, or \code{"dashboard"}).}
+\item{data_source}{A string indicating the source category (`"assessment"`, `"cde"`, or `"dashboard"`).}
 
 \item{schema_log_path}{Path to the folder containing schema logs. Default is the shared warehouse T drive path.}
 }
 \value{
-Invisibly returns the full SQL script as a single string. Also writes the script to a \code{.sql} file
-in the \code{schema_log_path} directory with a filename formatted as \verb{<source>_data_warehouse_<combined_folder>.sql}.
+Invisibly returns the full SQL script as a single string. Also writes the script to a `.sql` file
+in the `schema_log_path` directory with a filename formatted as `<source>_data_warehouse_<combined_folder>.sql`.
 }
 \description{
 Builds a full SQL script to create tables, insert data, and apply foreign key constraints
@@ -30,10 +30,8 @@ based on a flagged schema log and a prior-year comparison. The script includes m
 expected object checks, and runtime diagnostics for bulk loading into a SQL Server warehouse.
 }
 \details{
-\itemize{
-\item Automatically flags schema differences using \code{flag_schema_changes()} and saves a frozen copy of the schema log.
-\item Assembles the full script using \code{sql_table_coder()}, \code{sql_insert_coder()}, and \code{sql_foreign_key_coder()}.
-\item Automatically builds declarations for expected tables and FKs and prints progress and summary info.
-\item Generates SQL for error detection, transaction control, and post-run diagnostics.
-}
+- Automatically flags schema differences using `flag_schema_changes()` and saves a frozen copy of the schema log.
+- Assembles the full script using `sql_table_coder()`, `sql_insert_coder()`, and `sql_foreign_key_coder()`.
+- Automatically builds declarations for expected tables and FKs and prints progress and summary info.
+- Generates SQL for error detection, transaction control, and post-run diagnostics.
 }

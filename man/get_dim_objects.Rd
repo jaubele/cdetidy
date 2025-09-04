@@ -7,19 +7,17 @@
 get_dim_objects(keywords = c("dim", "entit", "group", "label"))
 }
 \arguments{
-\item{keywords}{A character vector of keywords to search for within object names. Default includes \code{"dim"}, \code{"entit"}, \code{"group"}, and \code{"label"}.}
+\item{keywords}{A character vector of keywords to search for within object names. Default includes `"dim"`, `"entit"`, `"group"`, and `"label"`.}
 }
 \value{
-Invisibly returns a character vector of matching object names. Also prints a styled summary using \code{cli}.
+Invisibly returns a character vector of matching object names. Also prints a styled summary using `cli`.
 }
 \description{
 Searches the global environment for object names that contain dimension-related keywords
-such as \code{"dim"}, \code{"entit"}, \code{"group"}, or \code{"label"}, and returns them (excluding known function names).
+such as `"dim"`, `"entit"`, `"group"`, or `"label"`, and returns them (excluding known function names).
 }
 \details{
-\itemize{
-\item Objects are matched using a keyword-based regular expression.
-\item Known function names are excluded from the results.
-\item This function is useful for interactively auditing which dimension-like data frames exist in memory.
-}
+- Objects are matched using a keyword-based regular expression.
+- Known function names are excluded from the results.
+- This function is useful for interactively auditing which dimension-like data frames exist in memory.
 }

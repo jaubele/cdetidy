@@ -7,26 +7,24 @@
 filter_schema_sources(schema_df, data_source = NULL, include_universal = TRUE)
 }
 \arguments{
-\item{schema_df}{A data frame representing the full schema log, including columns \code{data_source}, \code{dimension_type}, and \code{table_name}.}
+\item{schema_df}{A data frame representing the full schema log, including columns `data_source`, `dimension_type`, and `table_name`.}
 
-\item{data_source}{A string or character vector specifying one or more of \code{"assessment"}, \code{"cde"}, or \code{"dashboard"}. Required.}
+\item{data_source}{A string or character vector specifying one or more of `"assessment"`, `"cde"`, or `"dashboard"`. Required.}
 
-\item{include_universal}{Logical. If \code{TRUE}, also includes rows where \code{dimension_type == "universal"}. Default is \code{TRUE}.}
+\item{include_universal}{Logical. If `TRUE`, also includes rows where `dimension_type == "universal"`. Default is `TRUE`.}
 }
 \value{
 A filtered data frame containing only schema rows matching the specified data source(s),
-plus universal tables if \code{include_universal = TRUE}.
+plus universal tables if `include_universal = TRUE`.
 }
 \description{
-Filters a schema metadata table (typically from \code{primary_sql_schema_log.csv}) to include
-only rows that match a specified \code{data_source}, optionally including "universal" dimensions.
+Filters a schema metadata table (typically from `primary_sql_schema_log.csv`) to include
+only rows that match a specified `data_source`, optionally including "universal" dimensions.
 }
 \details{
-\itemize{
-\item The function normalizes \code{data_source} labels to match the schema log.
-\item It will error if no matching rows are found or if an invalid \code{data_source} is provided.
-\item Useful for generating SQL, inserts, or table builds scoped to a single source system.
-}
+- The function normalizes `data_source` labels to match the schema log.
+- It will error if no matching rows are found or if an invalid `data_source` is provided.
+- Useful for generating SQL, inserts, or table builds scoped to a single source system.
 }
 \examples{
 \dontrun{

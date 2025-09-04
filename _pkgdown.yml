@@ -1,3 +1,10 @@
+author:
+  - name: Joseph Aubele
+    affiliation: Orange County Department of Education
+  - name: Caleb Mitchell
+    affiliation: Orange County Department of Education
+  - name: Aubrey Roy
+    affiliation: Orange County Department of Education
 url: https://github.com/jaubele/cdetidy
 
 template:
@@ -43,6 +50,8 @@ reference:
       - export_with_schema
       - export_with_schema_warehouse
       - sql_schema_log_warehouse
+      - filter_schema_sources
+      - normalize_for_compare
 
   - title: Validation Utilities
     desc: "Functions to validate keys, suppression, and SQL-safe names."

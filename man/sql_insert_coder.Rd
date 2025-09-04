@@ -13,35 +13,29 @@ sql_insert_coder(
 }
 \arguments{
 \item{schema_flagged}{A data frame containing schema metadata, including columns:
-\itemize{
-\item \code{table_name}: Name of the table to load
-\item \code{data_source}: Data source type (e.g., \code{"CDE"}, \code{"Dashboard"}, \code{"Assessment"})
-\item \code{dimension_type}: Optional type (\code{"universal"} or other) to determine subfolder structure
-}}
+- `table_name`: Name of the table to load
+- `data_source`: Data source type (e.g., `"CDE"`, `"Dashboard"`, `"Assessment"`)
+- `dimension_type`: Optional type (`"universal"` or other) to determine subfolder structure}
 
-\item{data_base_dir}{Root directory where data files are stored. Default is \code{"T:/Data Warehouse/Warehouse Ready Files"}.}
+\item{data_base_dir}{Root directory where data files are stored. Default is `"T:/Data Warehouse/Warehouse Ready Files"`.}
 
-\item{combined_folder}{The name of the subdirectory (e.g., \code{"2019_2024"}) that contains the flat files. Required.}
+\item{combined_folder}{The name of the subdirectory (e.g., `"2019_2024"`) that contains the flat files. Required.}
 
-\item{universal_folder}{Folder name for universal dimensions. Default is \code{"universal"}.}
+\item{universal_folder}{Folder name for universal dimensions. Default is `"universal"`.}
 }
 \value{
-A character vector of \verb{BULK INSERT} SQL statements, one per table. Each statement includes:
-\itemize{
-\item Path to the \code{.csv} file
-\item Error log configuration
-\item A statement to increment \verb{@__bulk_executed}
-}
+A character vector of `BULK INSERT` SQL statements, one per table. Each statement includes:
+- Path to the `.csv` file
+- Error log configuration
+- A statement to increment `@__bulk_executed`
 }
 \description{
-Creates a character vector of \verb{BULK INSERT} SQL statements for loading flat files into SQL Server tables.
-Uses metadata from a flagged schema (e.g., from \code{sql_schema_log()} or \code{flag_schema_changes()})
+Creates a character vector of `BULK INSERT` SQL statements for loading flat files into SQL Server tables.
+Uses metadata from a flagged schema (e.g., from `sql_schema_log()` or `flag_schema_changes()`)
 to determine table names and file paths, and emits standardized SQL for bulk-loading.
 }
 \details{
-\itemize{
-\item File paths are validated, and missing files cause the function to fail early with a helpful message.
-\item Uses \code{sql_ident()} to quote table names and escapes single quotes in file paths.
-\item Assumes CSV files are encoded using Windows ANSI (\code{CODEPAGE = 'ACP'}) and start on line 2.
-}
+- File paths are validated, and missing files cause the function to fail early with a helpful message.
+- Uses `sql_ident()` to quote table names and escapes single quotes in file paths.
+- Assumes CSV files are encoded using Windows ANSI (`CODEPAGE = 'ACP'`) and start on line 2.
 }
