@@ -16,6 +16,7 @@
 #' - It searches for objects in the global environment (`.GlobalEnv`).
 #' - Useful for scripts that generate many intermediate tables for reporting or dashboarding.
 #'
+#' @export
 
 clear_dim_objects <- function(base_string = NULL, dry_run = TRUE,
                               keywords = c("dim", "entit", "group", "label")) { # these are same keywords it will check against

@@ -13,6 +13,7 @@ safe_fwrite_warehouse(
   log_metadata = NULL,
   data_year = NULL,
   data_source = NULL,
+  data_type = NULL,
   data_description = NA,
   user_note = NA,
   table_name = NULL,
@@ -38,6 +39,8 @@ safe_fwrite_warehouse(
 \item{data_year}{Data year (numeric or character) — required if \code{log_metadata} is not supplied.}
 
 \item{data_source}{A string describing the data source (e.g., \code{"CDE"}, \code{"Dashboard"}).}
+
+\item{data_type}{A string describing the specific data type/origin (e.g., CAST, SBAC, Absenteeism, dim)}
 
 \item{data_description}{A short description of the dataset (e.g., \code{"Absenteeism summary by subgroup"}).}
 

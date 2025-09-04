@@ -5,3 +5,5 @@
 .DS_Store
 .quarto
 docs
+package_loading.R
+.yml

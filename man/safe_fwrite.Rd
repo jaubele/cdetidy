@@ -13,6 +13,7 @@ safe_fwrite(
   log_metadata = NULL,
   data_year = NULL,
   data_source = NULL,
+  data_type = NULL,
   data_description = NA,
   user_note = NA,
   table_name = NULL,
@@ -37,7 +38,9 @@ safe_fwrite(
 
 \item{data_year}{The year the data represents. Required if \code{log_metadata} is not supplied.}
 
-\item{data_source}{A short label identifying the source of the data (e.g., \code{"CDE"}, \code{"Dashboard"}).}
+\item{data_source}{A short label identifying the source of the data (e.g., \code{"CDE"}, \code{"Dashboard"}, \code{"Assessment"}).}
+
+\item{data_type}{A short label identifying what type of data you are writing out (e.g., "\code{CAST}", "\code{SBAC}", "\code{Absenteeism}", dims)}
 
 \item{data_description}{A short description of the dataset (e.g., \code{"Chronic absenteeism rates by subgroup"}).}
 
