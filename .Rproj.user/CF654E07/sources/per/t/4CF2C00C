@@ -1,0 +1,27 @@
+{
+    "id": "4CF2C00C",
+    "path": "T:/Data Warehouse/Global R Scripts/REDI Back End ETL Custom Functions.R",
+    "project_path": null,
+    "type": "r_source",
+    "hash": "1436371501",
+    "contents": "",
+    "dirty": false,
+    "created": 1757009892157.0,
+    "source_on_save": false,
+    "relative_order": 3,
+    "properties": {
+        "source_window_id": "",
+        "Source": "Source",
+        "docOutlineVisible": "1",
+        "cursorPosition": "875,3",
+        "scrollLine": "853"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1757010118,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1757010118407,
+    "read_only": false,
+    "read_only_alternatives": []
+}

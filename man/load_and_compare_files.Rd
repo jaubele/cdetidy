@@ -2,7 +2,7 @@
 % Please edit documentation in R/load_and_compare_files.R
 \name{load_and_compare_files}
 \alias{load_and_compare_files}
-\title{Load, compare, and optionally join multiple files from a folder}
+\title{Load, standardize ID codes, compare schemas, and optionally join files}
 \usage{
 load_and_compare_files(
   folder,
@@ -21,44 +21,85 @@ load_and_compare_files(
 )
 }
 \arguments{
-\item{folder}{Path to the folder where files will be searched.}
+\item{folder}{Path to the folder to search.}
 
-\item{keywords}{A character vector of keywords to match filenames against.}
+\item{keywords}{Character vector of filename keywords to match.}
 
-\item{join_method}{Join strategy to use. One of `"bind_rows"` (default), `"left_join"`, or `"full_join"`.}
+\item{join_method}{Join strategy: one of `"bind_rows"` (default),
+`"left_join"`, or `"full_join"`.}
 
-\item{by}{If using a join method (not `bind_rows`), a character vector of join keys. Required for joins.}
+\item{by}{Character vector of join keys (required when `join_method` is not
+`"bind_rows"`).}
 
-\item{recursive}{Logical. If `TRUE`, search subdirectories. Default is `TRUE`.}
+\item{recursive}{Logical; search subdirectories? Default `TRUE`.}
 
-\item{ignore_case}{Logical. If `TRUE`, ignore case when matching filenames. Default is `TRUE`.}
+\item{ignore_case}{Logical; case-insensitive filename matching? Default `TRUE`.}
 
-\item{full_names}{Logical. If `TRUE`, return full file paths. Default is `TRUE`.}
+\item{full_names}{Logical; return full file paths? Default `TRUE`.}
 
-\item{require_approval_on_diff}{Logical. If `TRUE` and differences in column names/order are found, prompts for user confirmation. Default is `TRUE`.}
+\item{require_approval_on_diff}{Logical; when `TRUE`, if column name/order
+mismatches are found you’re prompted to proceed. Default `TRUE`.}
 
-\item{force}{Logical. If `TRUE`, override prompts and proceed even when discrepancies are found. Default is `FALSE`.}
+\item{force}{Logical; skip the prompt and proceed even when differences are
+detected. Default `FALSE`.}
 
-\item{encoding}{Optional. Encoding to use when reading files (e.g., `"UTF-8"`). Default is `"UTF-8"`.}
+\item{encoding}{Optional file encoding passed to `readr::locale()`
+(e.g., `"UTF-8"`, `"latin1"`). Default `"UTF-8"`.}
 
-\item{id_col}{Optional. If provided, a column will be added when using `bind_rows` to indicate source file names.}
+\item{id_col}{Optional; when using `bind_rows`, add a column with the source
+filename. Set to `NULL` to omit.}
 
-\item{show_compare_details}{Logical. If `TRUE`, prints detailed column comparison results. Default is `TRUE`.}
+\item{show_compare_details}{Logical; print per-file column comparisons.
+Default `TRUE`.}
 
-\item{also_run_compare_function}{Logical. If `TRUE`, and the function `compare_variable_names()` exists, it will be called for each file pair.}
+\item{also_run_compare_function}{Logical; if `TRUE` and a function named
+`compare_variable_names()` exists, it will be called for each file pair.}
 }
 \value{
-A data frame created by joining the selected files (if no discrepancies) or `NULL` if discrepancies are found and approval is denied.
-If `bind_rows` is used with `id_col`, the output will include a source ID column.
+A data frame produced by joining the selected files (or `NULL` if
+  discrepancies were found and approval was denied). When `bind_rows` is used
+  with `id_col`, the result includes that source column.
 }
 \description{
-Searches a folder for files matching given keywords, loads them into memory,
-checks for consistency in column names and order, and optionally joins them
-using one of several join methods. Designed for validating files before merging
-in an ETL or QA process.
+Searches `folder` for files whose names match `keywords`, reads them with
+`readr::read_csv()`, **standardizes ID code columns**, normalizes text to
+UTF-8, compares column sets across files, and (optionally) joins them using
+`bind_rows`, `left_join`, or `full_join`.
 }
 \details{
-- Forces select columns (e.g., `"cds"`, `"county_code"`, etc.) to character type on load, if present.
-- Normalizes character encodings to UTF-8.
-- Prompts user to resolve column mismatches unless `force = TRUE` or run non-interactively.
+**Standardization of ID codes (idempotent; runs only on columns that exist):**
+- `county_code` → 2 chars, left-padded with `0` (non-digits removed first).
+- `district_code` → 5 chars, left-padded with `0`.
+- `school_code` → 7 chars, left-padded with `0`.
+- `cds` → 14 chars; if missing or not 14 digits, it is rebuilt as
+  `paste0(county_code, district_code, school_code)` when those parts exist,
+  then left-padded to 14.
+
+Additional behaviors:
+- Forces the ID columns above to **character** type on read when present.
+- Normalizes all character columns to UTF-8 via `iconv`.
+- Compares column names (and order) across files and reports differences.
+- If `require_approval_on_diff = TRUE` (default) and differences are found,
+  the function prompts before continuing (unless `force = TRUE`).
+}
+\examples{
+\dontrun{
+# Simple row-bind with source column
+out <- load_and_compare_files(
+  folder = "T:/Data Warehouse/Assessment/dim",
+  keywords = "school",
+  join_method = "bind_rows",
+  id_col = "source_file"
+)
+
+# Full join on keys after schema check
+out2 <- load_and_compare_files(
+  folder = "path/to/folder",
+  keywords = c("part1", "part2"),
+  join_method = "full_join",
+  by = c("cds", "year"),
+  force = TRUE
+)
+}
+
 }

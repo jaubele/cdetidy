@@ -7,7 +7,7 @@
 validate_sql_identifiers(
   name_vec,
   type = c("column", "table"),
-  max_length = 63
+  max_length = 128
 )
 }
 \arguments{
@@ -15,7 +15,7 @@ validate_sql_identifiers(
 
 \item{type}{A string indicating what type of identifier is being checked. Must be `"column"` or `"table"`. Default is `"column"`.}
 
-\item{max_length}{Maximum number of characters allowed in a name. Default is 63.}
+\item{max_length}{Maximum number of characters allowed in a name. Default is 128.}
 }
 \value{
 Invisibly returns `NULL`. Raises an error if any invalid names are found.
