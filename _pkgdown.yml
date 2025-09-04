@@ -60,6 +60,7 @@ reference:
       - validate_sql_identifiers
       - check_suppression_dependency
       - compare_variable_names
+      - validate_combined_data
 
   - title: Dimension Management
     desc: "Helpers for identifying, cleaning, or clearing dimension-like objects."
