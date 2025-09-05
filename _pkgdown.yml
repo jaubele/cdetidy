@@ -5,7 +5,7 @@ author:
     affiliation: Orange County Department of Education
   - name: Aubrey Roy
     affiliation: Orange County Department of Education
-url: https://github.com/jaubele/cdetidy
+url: https://jaubele.github.io/cdetidy
 
 template:
   bootstrap: 5
@@ -60,6 +60,7 @@ reference:
       - validate_sql_identifiers
       - check_suppression_dependency
       - compare_variable_names
+      - validate_combined_data
 
   - title: Dimension Management
     desc: "Helpers for identifying, cleaning, or clearing dimension-like objects."

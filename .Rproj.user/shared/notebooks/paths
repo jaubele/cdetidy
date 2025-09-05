@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 C:/Users/cmitchell/Desktop/cdetidy/R/archive_schema_log.R="D2F0584F"
 C:/Users/cmitchell/Desktop/cdetidy/R/assessment_files_group_labeling.R="456412D3"
 C:/Users/cmitchell/Desktop/cdetidy/R/load_and_compare_files.R="E46A1547"
@@ -10,6 +11,12 @@ C:/Users/cmitchell/Desktop/cdetidy/R/validate_sql_identifiers.R="C8D20620"
 C:/Users/cmitchell/Desktop/cdetidy/R/verify_padded_cds.R="E6A01BC3"
 C:/Users/cmitchell/Desktop/cdetidy/README.Rmd="B1F4B847"
 C:/Users/cmitchell/Documents/.Renviron="CD257007"
+=======
+>>>>>>> 3d52f0f4137d23f0570259c20624966dd303cf6e
 T:/Data Warehouse/2024/R Scripts/CAST_24.R="1B711646"
 T:/Data Warehouse/Global R Scripts/REDI Back End ETL Custom Functions.R="5C86B92C"
 T:/Data Warehouse/Global R Scripts/REDI Front End ETL Custom Functions.R="4C27A085"
+T:/Data Warehouse/Global R Scripts/cdetidy/.gitignore="2E77CFBF"
+T:/Data Warehouse/Global R Scripts/cdetidy/DESCRIPTION="B0B56D80"
+T:/Data Warehouse/Global R Scripts/cdetidy/_pkgdown.yml="42B48DF3"
+T:/Data Warehouse/Global R Scripts/sql script validater.R="18014232"
