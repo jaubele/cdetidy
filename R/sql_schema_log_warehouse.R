@@ -73,19 +73,24 @@ sql_schema_log_warehouse <- function(data,
   if (is.null(primary_key)) {
     stop("❌ You should supply a primary key for this table using `primary_key`.")
   }
+  
   if (!all(primary_key %in% names(data))) {
     stop("❌ The specified primary key does not exist in the dataset: ",
          paste(setdiff(primary_key, names(data)), collapse = ", "))
   }
+  
   # Uniqueness checks
-  if (length(primary_key) == 1 && anyDuplicated(data[[primary_key]]) > 0) {
-    stop("❌ The primary key column '", primary_key, "' contains duplicates.")
+  # For any length(primary_key) >= 1
+  if (data.table::uniqueN(data, by = primary_key) < nrow(data)) {
+    dups <- data[, .N, by = primary_key][N > 1][order(-N)]
+    stop(
+      "❌ Duplicate primary key values detected (showing top few):\n",
+      paste(utils::capture.output(print(head(dups, 10))), collapse = "\n")
+    )
   }
-  if (length(primary_key) > 1 && anyDuplicated(data[, ..primary_key, drop = FALSE]) > 0) {
-    stop("❌ The composite primary key (", paste(primary_key, collapse = ", "), ") contains duplicates.")
-  }
+  
   # Missing checks
-  if (any(is.na(dplyr::select(data, dplyr::all_of(primary_key))))) {
+  if (anyNA(data[, .SD, .SDcols = primary_key])) {
     stop("❌ One or more of the primary key columns (",
          paste(primary_key, collapse = ", "), ") contain missing values.")
   }

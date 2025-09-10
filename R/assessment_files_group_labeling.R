@@ -80,13 +80,22 @@ assessment_files_group_labeling <- function(df, var_names, output_names) {
 
   # ---- INTERNAL: Hardcoded column-specific value mutation ----
   if ("grade" %in% names(df)) {
+    
     df$grade_original <- df$grade
-    df$grade <- dplyr::recode(
-      df$grade,
+    
+    # Recode directly on the character vector
+    df$grade[df$grade == "KN"] <- "-1"   # Kindergarten sentinel
+    # KN needs to become numeric, as it's the only character value in list
+    
+    grade_num <- as.numeric(df$grade)
+    
+    grade_num <- dplyr::recode(
+      grade_num,
       `99` = 991,
       `8` = 81,
-      .default = as.double(df$grade)
-    )
+      .default = grade_num)
+    
+    df$grade <- grade_num
   }
 
   # Sample hardcoded classification map
@@ -99,7 +108,7 @@ assessment_files_group_labeling <- function(df, var_names, output_names) {
     list(values = c(79), label = "Native Hawaiian or Pacific Islander", num = 6, group_num = 1, group = "Race"),
     list(values = c(144), label = "Two or More Races", num = 7, group_num = 1, group = "Race"),
     list(values = c(80), label = "White", num = 8, group_num = 1, group = "Race"),
-    list(values = c("KN"), label = "Kindergarten", num = 9, group_num = 2, group = "Grade"),
+    list(values = c(-1), label = "Kindergarten", num = 9, group_num = 2, group = "Grade"),
     list(values = c(1, "01"), label = "Grade 1", num = 10, group_num = 2, group = "Grade"),
     list(values = c(2, "02"), label = "Grade 2", num = 11, group_num = 2, group = "Grade"),
     list(values = c(3, "03"), label = "Grade 3", num = 12, group_num = 2, group = "Grade"),
@@ -182,7 +191,8 @@ assessment_files_group_labeling <- function(df, var_names, output_names) {
     list(values = c(224), label = "Hispanic or Latino and Not Economically Disadvantaged", num = 89, group_num = 9, group = "Crosstabs"),
     list(values = c(225), label = "Native Hawaiian or Pacific Islander and Not Economically Disadvantaged", num = 90, group_num = 9, group = "Crosstabs"),
     list(values = c(226), label = "White and Not Economically Disadvantaged", num = 91, group_num = 9, group = "Crosstabs"),
-    list(values = c(227), label = "Two or More Races and Not Economically Disadvantaged", num = 92, group_num = 9, group = "Crosstabs")
+    list(values = c(227), label = "Two or More Races and Not Economically Disadvantaged", num = 92, group_num = 9, group = "Crosstabs"),
+    list(values = c(248), label = "English Learner - Less than 1 Year in Program", num = 93, group_num = 6, group = "English Language Acquisition Status")
   )
 
   # ---- Resolve only relevant duplicates ----
