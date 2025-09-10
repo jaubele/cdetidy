@@ -8,6 +8,7 @@
 <url><loc>https://jaubele.github.io/cdetidy/reference/check_suppression_dependency.html</loc></url>
 <url><loc>https://jaubele.github.io/cdetidy/reference/class_map_to_dim.html</loc></url>
 <url><loc>https://jaubele.github.io/cdetidy/reference/clear_dim_objects.html</loc></url>
+<url><loc>https://jaubele.github.io/cdetidy/reference/coerce_suppression_cols.html</loc></url>
 <url><loc>https://jaubele.github.io/cdetidy/reference/compare_variable_names.html</loc></url>
 <url><loc>https://jaubele.github.io/cdetidy/reference/dashboard_files_group_labeling.html</loc></url>
 <url><loc>https://jaubele.github.io/cdetidy/reference/expand_cds_codes.html</loc></url>
@@ -36,6 +37,7 @@
 <url><loc>https://jaubele.github.io/cdetidy/reference/sql_schema_log.html</loc></url>
 <url><loc>https://jaubele.github.io/cdetidy/reference/sql_schema_log_warehouse.html</loc></url>
 <url><loc>https://jaubele.github.io/cdetidy/reference/sql_table_coder.html</loc></url>
+<url><loc>https://jaubele.github.io/cdetidy/reference/star_scan.html</loc></url>
 <url><loc>https://jaubele.github.io/cdetidy/reference/validate_combined_data.html</loc></url>
 <url><loc>https://jaubele.github.io/cdetidy/reference/validate_group_mapping_tabyl.html</loc></url>
 <url><loc>https://jaubele.github.io/cdetidy/reference/validate_primary_key.html</loc></url>
