@@ -1,6 +1,6 @@
 Package: cdetidy
 Title: Tools for Working with CDE Datasets
-Version: 0.1.0
+Version: 0.1.4
 Authors@R: c(
   person("Joseph", "Aubele", email = "jaubele@ocde.us", role = c("aut", "cre")),
   person("Caleb", "Mitchell", role = "aut"),
