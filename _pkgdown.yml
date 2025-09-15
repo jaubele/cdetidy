@@ -64,7 +64,7 @@ reference:
       - coerce_suppression_cols
       - star_scan
       - zero_inflation_diff
-      - compare_suppression_cols
+      - compare_suppression_columns
 
   - title: Dimension Management
     desc: "Helpers for identifying, cleaning, or clearing dimension-like objects."
