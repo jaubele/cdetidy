@@ -152,7 +152,12 @@ cde_files_group_labeling <- function(df, var_names, output_names) {
     list(values = c("AR_35"), label = "Ages 3-5", num = 71, group_num = 3, group = "Age Range"),
     list(values = c("AR_612"), label = "Ages 6-12", num = 72, group_num = 3, group = "Age Range"),
     list(values = c("AR_1318"), label = "Ages 13-18", num = 73, group_num = 3, group = "Age Range"),
-    list(values = c("AR_19P"), label = "Ages 19 plus", num = 74, group_num = 3, group = "Age Range")
+    list(values = c("AR_19P"), label = "Ages 19 plus", num = 74, group_num = 3, group = "Age Range"),
+    list(values = c("ALL"), label = "All data for all schools", num = 75, group_num = 9, group = "Grade Span"),
+    list(values = c("GS_K6", "GRK6"), label = "School grade span K-6", num = 76, group_num = 9, group = "Grade Span"),
+    list(values = c("GS_69", "GR69"), label = "School grade span 6-9", num = 77, group_num = 9, group = "Grade Span"),
+    list(values = c("GS_912", "GR912"), label = "School grade span 9-12", num = 78, group_num = 9, group = "Grade Span"),
+    list(values = c("GS_K12", "GRK12"), label = "School grade span K-12", num = 79, group_num = 9, group = "Grade Span")
   )
 
   # ---- Resolve only relevant duplicates ----
