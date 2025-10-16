@@ -115,7 +115,7 @@ cde_files_group_labeling <- function(df, var_names, output_names) {
     list(values = c("GN_M", "GM"), label = "Male", num = 34, group_num = 4, group = "Gender"),
     list(values = c("GN_X", "GX", "GN"), label = "Non-Binary", num = 35, group_num = 4, group = "Gender"),
     list(values = c("GN_Z", "GX", "GZ"), label = "Gender Missing", num = 36, group_num = 4, group = "Gender"),
-    list(values = c("SG_EL", "SE", "ELAS_EL"), label = "English Learner", num = 37, group_num = 8, group = "English Language Acquisition Status"),
+    list(values = c("SG_EL", "SE", "ELAS_EL"), label = "English Learner", num = 37, group_num = 5, group = "Student Subgroup"),
     list(values = c("SG_DS", "SD"), label = "Students with Disabilities", num = 38, group_num = 5, group = "Student Subgroup"),
     list(values = c("SG_SD", "SS"), label = "Socioeconomically Disadvantaged", num = 39, group_num = 5, group = "Student Subgroup"),
     list(values = c("SG_MG", "SM"), label = "Migrant Youth", num = 40, group_num = 5, group = "Student Subgroup"),
