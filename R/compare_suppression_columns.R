@@ -33,8 +33,13 @@ compare_suppression_columns <- function(df_prev, df_curr) {
   prev_cols <- star_scan(df_prev)$columns
   curr_cols <- star_scan(df_curr)$columns
   tibble::tibble(
-    new_suppressed_cols = list(sort(setdiff(curr_cols, prev_cols))),
-    stopped_being_suppressed = list(sort(setdiff(prev_cols, curr_cols))),
-    unchanged_suppressed_cols = list(sort(intersect(prev_cols, curr_cols)))
-  )
+    new_suppressed_cols = sort(setdiff(curr_cols, prev_cols)),
+    stopped_being_suppressed = sort(setdiff(prev_cols, curr_cols)),
+    unchanged_suppressed_cols = sort(intersect(prev_cols, curr_cols))
+  ) |> 
+    dplyr::mutate(
+      new_suppressed_cols = paste(new_suppressed_cols, collapse = ", "),
+      stopped_being_suppressed = paste(stopped_being_suppressed, collapse = ", "),
+      unchanged_suppressed_cols = paste(unchanged_suppressed_cols, collapse = ", ")
+    )
 }
