@@ -30,16 +30,14 @@
 
 # Requires your star_scan() util available in the session
 compare_suppression_columns <- function(df_prev, df_curr) {
+  collapse_vec <- function(x) if (length(x)) paste(sort(x), collapse = ", ") else "(none)"
+  
   prev_cols <- star_scan(df_prev)$columns
   curr_cols <- star_scan(df_curr)$columns
+  
   tibble::tibble(
-    new_suppressed_cols = sort(setdiff(curr_cols, prev_cols)),
-    stopped_being_suppressed = sort(setdiff(prev_cols, curr_cols)),
-    unchanged_suppressed_cols = sort(intersect(prev_cols, curr_cols))
-  ) |> 
-    dplyr::mutate(
-      new_suppressed_cols = paste(new_suppressed_cols, collapse = ", "),
-      stopped_being_suppressed = paste(stopped_being_suppressed, collapse = ", "),
-      unchanged_suppressed_cols = paste(unchanged_suppressed_cols, collapse = ", ")
-    )
+    new_suppressed_cols       = collapse_vec(setdiff(curr_cols, prev_cols)),
+    stopped_being_suppressed  = collapse_vec(setdiff(prev_cols, curr_cols)),
+    unchanged_suppressed_cols = collapse_vec(intersect(prev_cols, curr_cols))
+  )
 }
