@@ -76,6 +76,7 @@ safe_fwrite <- function(
         EL             = c("el","englishlearner","ell","englishlearners"),
         Grad_Dropout   = c("graddropout","graduation","grad","dropout","cohort"),
         Post_Secondary = c("postsecondary","post_secondary","collegecareer","cci","collegeandcareer"),
+        Staff = c("staff", "certificated", "classified"),
         dim = c("dim", "dimension")
       )
     ),
