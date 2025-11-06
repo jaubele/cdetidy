@@ -106,7 +106,7 @@ cde_files_group_labeling <- function(df, var_names, output_names) {
     list(values = c("GS_PS3"), label = "Grades PreK-3", num = 25, group_num = 2, group = "Grade"),
     list(values = c("AR_03"), label = "Children K-12 who are 0-3", num = 26, group_num = 3, group = "Age Range"),
     list(values = c("AR_0418"), label = "Children K-12 who are 4-18", num = 27, group_num = 3, group = "Age Range"),
-    list(values = c("AR_1922"), label = "Continuing Students K-12 who are 19-12", num = 28, group_num = 3, group = "Age Range"),
+    list(values = c("AR_1922"), label = "Continuing Students K-12 who are 19-22", num = 28, group_num = 3, group = "Age Range"),
     list(values = c("AR_2329"), label = "Adults K-12 who are 23-29", num = 29, group_num = 3, group = "Age Range"),
     list(values = c("AR_3039"), label = "Adults K-12 who are 30-39", num = 30, group_num = 3, group = "Age Range"),
     list(values = c("AR_4049"), label = "Adults K-12 who are 40-49", num = 31, group_num = 3, group = "Age Range"),
@@ -125,7 +125,7 @@ cde_files_group_labeling <- function(df, var_names, output_names) {
     list(values = c("HUYN"), label = "Not Homeless Unaccompanied Youth", num = 44, group_num = 5, group = "Student Subgroup"),
     list(values = c("HUYY"), label = "Homeless Unaccompanied Youth", num = 45, group_num = 5, group = "Student Subgroup"),
     list(values = c("EL_Y"), label = "Is an English Learner", num = 46, group_num = 8, group = "English Language Acquisition Status"),
-    list(values = c("EL_Y"), label = "Is Not an English Learner", num = 47, group_num = 8, group = "English Language Acquisition Status"),
+    list(values = c("EL_N"), label = "Is Not an English Learner", num = 47, group_num = 8, group = "English Language Acquisition Status"),
     list(values = c("CAY"), label = "Is Chronically Absent", num = 48, group_num = 5, group = "Student Subgroup"),
     list(values = c("CAN"), label = "Is Not Chronically Absent", num = 49, group_num = 5, group = "Student Subgroup"),
     list(values = c("TA"), label = "Total Number of Students", num = 50, group_num = 6, group = "Total Number of Students"),
@@ -163,7 +163,8 @@ cde_files_group_labeling <- function(df, var_names, output_names) {
     list(values = c("GR03"), label = "Grade 3", num = 82, group_num = 2, group = "Grade"),
     list(values = c("GR05"), label = "Grade 5", num = 83, group_num = 2, group = "Grade"),
     list(values = c("GR06"), label = "Grade 6", num = 84, group_num = 2, group = "Grade"),
-    list(values = c("GR07"), label = "Grade 7", num = 85, group_num = 2, group = "Grade")
+    list(values = c("GR07"), label = "Grade 7", num = 85, group_num = 2, group = "Grade"),
+    list(values = c("gr_ungrade", "ungraded"), label = "Ungraded", num = 86, group_num = 2, group = "Grade")
   )
 
   # ---- Resolve only relevant duplicates ----
