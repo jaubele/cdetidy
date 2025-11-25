@@ -96,22 +96,45 @@ load_and_compare_files <- function(
   # NEW: idempotent code normalizer
   standardize_codes <- function(df) {
     to_chr <- function(x) as.character(x)
-
+    
+    # -- existing component padding --
     if ("county_code"   %in% names(df)) df$county_code   <- str_pad(gsub("\\D","", to_chr(df$county_code)),   2, pad = "0")
     if ("district_code" %in% names(df)) df$district_code <- str_pad(gsub("\\D","", to_chr(df$district_code)), 5, pad = "0")
     if ("school_code"   %in% names(df)) df$school_code   <- str_pad(gsub("\\D","", to_chr(df$school_code)),   7, pad = "0")
-
+    
+    # ---- NEW: cds allows 14–18 chars, pad if < 14 ----
     if ("cds" %in% names(df)) {
-      cds <- gsub("\\D","", to_chr(df$cds))
-      good <- nchar(cds) == 14
+      cds <- gsub("\\D", "", to_chr(df$cds))
+      n   <- nchar(cds)
+      
+      # cases
+      too_short  <- n < 14
+      ok_range   <- n >= 14 & n <= 18    # accept 14–18
+      too_long   <- n > 18
+      
+      # if too short, rebuild from components when available
       if (all(c("county_code","district_code","school_code") %in% names(df))) {
-        cds[!good] <- paste0(df$county_code, df$district_code, df$school_code)[!good]
+        cds[too_short] <- paste0(df$county_code, df$district_code, df$school_code)[too_short]
       }
-      df$cds <- str_pad(cds, 14, pad = "0")
+      
+      # pad anything < 14 up to 14
+      cds[too_short] <- str_pad(cds[too_short], 14, pad = "0")
+      
+      # leave 14–18 digits untouched
+      # cds[ok_range] stays as-is
+      
+      # optionally truncate >18?
+      # user didn't request — so we keep original (but you may want to flag)
+      # cds[too_long] <- cds[too_long]
+      
+      df$cds <- cds
+      
     } else if (all(c("county_code","district_code","school_code") %in% names(df))) {
+      
+      # if cds missing entirely, build standard 14-digit
       df$cds <- paste0(df$county_code, df$district_code, df$school_code)
     }
-
+    
     df
   }
 
