@@ -1,7 +1,4 @@
 <urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
-<url><loc>https://jaubele.github.io/cdetidy/404.html</loc></url>
-<url><loc>https://jaubele.github.io/cdetidy/authors.html</loc></url>
-<url><loc>https://jaubele.github.io/cdetidy/index.html</loc></url>
 <url><loc>https://jaubele.github.io/cdetidy/reference/archive_schema_log.html</loc></url>
 <url><loc>https://jaubele.github.io/cdetidy/reference/assessment_files_group_labeling.html</loc></url>
 <url><loc>https://jaubele.github.io/cdetidy/reference/cde_files_group_labeling.html</loc></url>
@@ -45,5 +42,8 @@
 <url><loc>https://jaubele.github.io/cdetidy/reference/validate_sql_identifiers.html</loc></url>
 <url><loc>https://jaubele.github.io/cdetidy/reference/verify_padded_cds.html</loc></url>
 <url><loc>https://jaubele.github.io/cdetidy/reference/zero_inflation_diff.html</loc></url>
+<url><loc>https://jaubele.github.io/cdetidy/index.html</loc></url>
+<url><loc>https://jaubele.github.io/cdetidy/authors.html</loc></url>
+<url><loc>https://jaubele.github.io/cdetidy/404.html</loc></url>
 </urlset>
 

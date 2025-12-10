@@ -68,7 +68,7 @@ safe_fwrite <- function(
       )
     ),
     CDE = list(
-      values = c("Absenteeism","Enrollment","Discipline","EL","Grad_Dropout","Post_Secondary", "dim"),
+      values = c("Absenteeism","Enrollment","Discipline","EL","Grad_Dropout","Post_Secondary", "Staff", "Altnerative_Ed", "dim"),
       syns = list(
         Absenteeism    = c("absenteeism","chronic","chronicabsenteeism"),
         Enrollment     = c("enrollment","enrol"),
@@ -76,7 +76,8 @@ safe_fwrite <- function(
         EL             = c("el","englishlearner","ell","englishlearners"),
         Grad_Dropout   = c("graddropout","graduation","grad","dropout","cohort"),
         Post_Secondary = c("postsecondary","post_secondary","collegecareer","cci","collegeandcareer"),
-        Staff = c("staff", "certificated", "classified"),
+        Staff = c("staff", "certificated", "classified", "tamo", "hire"),
+        Alternative_Ed = c("alted", "alt", "juvenile", "community schools", "juvenile court"),
         dim = c("dim", "dimension")
       )
     ),
