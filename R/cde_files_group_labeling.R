@@ -91,7 +91,7 @@ cde_files_group_labeling <- function(df, var_names, output_names) {
     list(values = c("GRKN", "GRK"), label = "Kindergarten", num = 10, group_num = 2, group = "Grade"),
     list(values = c("GR13"), label = "Grades 1-3", num = 11, group_num = 2, group = "Grade"),
     list(values = c("GS_46", "GR46"), label = "Grades 4-6", num = 12, group_num = 2, group = "Grade"),
-    list(values = c("GR78"), label = "Grades 7-8", num = 13, group_num = 2, group = "Grade"),
+    list(values = c("GR78", "GS_78"), label = "Grades 7-8", num = 13, group_num = 2, group = "Grade"),
     list(values = c("GRK8"), label = "Grades K-8", num = 14, group_num = 2, group = "Grade"),
     list(values = c("GS_912", "GR912"), label = "Grades 9-12", num = 15, group_num = 2, group = "Grade"),
     list(values = c("GRTKKN"), label = "Grades TK-K", num = 16, group_num = 2, group = "Grade"),

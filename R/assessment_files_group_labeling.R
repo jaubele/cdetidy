@@ -123,7 +123,7 @@ assessment_files_group_labeling <- function(df, var_names, output_names) {
     list(values = c(12, "12"), label = "Grade 12", num = 21, group_num = 2, group = "Grade"),
     list(values = c(13, "13"), label = "All Grades", num = 22, group_num = 2, group = "Grade"),
     list(values = c(14), label = "All High School Grades", num = 23, group_num = 2, group = "Grade"),
-    list(values = c(991), label = "Cohort Grade/Graduating Class", num = 24, group_num = 2, group = "Grade"), #manual c() value to avoid forced duplicates
+    list(values = c(99), label = "Cohort Grade/Graduating Class", num = 24, group_num = 2, group = "Grade"), #manual c() value to avoid forced duplicates
     list(values = c(4), label = "Female", num = 25, group_num = 3, group = "Gender"),
     list(values = c(3), label = "Male", num = 26, group_num = 3, group = "Gender"),
     list(values = c(28), label = "Migrant Youth", num = 27, group_num = 4, group = "Student Subgroup"),
@@ -136,7 +136,7 @@ assessment_files_group_labeling <- function(df, var_names, output_names) {
     list(values = c(51), label = "No Armed Forces Family Member", num = 34, group_num = 4, group = "Student Subgroup"),
     list(values = c(1), label = "All Students", num = 35, group_num = 4, group = "Student Subgroup"),
     list(values = c(128), label = "Student with a Disability", num = 36, group_num = 4, group = "Student Subgroup"),
-    list(values = c(99), label = "Student Without a Disability", num = 37, group_num = 4, group = "Student Subgroup"),
+    list(values = c(099), label = "Student Without a Disability", num = 37, group_num = 4, group = "Student Subgroup"),
     list(values = c(239), label = "Student with a Disability Tested with Alternate Assessment", num = 38, group_num = 5, group = "Test Taken"),
     list(values = c(31), label = "Socioeconomically Disadvantaged", num = 39, group_num = 4, group = "Student Subgroup"),
     list(values = c(111), label = "Not Socioeconomically Disadvantaged", num = 40, group_num = 4, group = "Student Subgroup"),
