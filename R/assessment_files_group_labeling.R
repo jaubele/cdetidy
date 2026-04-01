@@ -123,7 +123,7 @@ assessment_files_group_labeling <- function(df, var_names, output_names) {
     list(values = c(12, "12"), label = "Grade 12", num = 21, group_num = 2, group = "Grade"),
     list(values = c(13, "13"), label = "All Grades", num = 22, group_num = 2, group = "Grade"),
     list(values = c(14), label = "All High School Grades", num = 23, group_num = 2, group = "Grade"),
-    list(values = c(99), label = "Cohort Grade/Graduating Class", num = 24, group_num = 2, group = "Grade"), #manual c() value to avoid forced duplicates
+    list(values = c(991), label = "Cohort Grade/Graduating Class", num = 24, group_num = 2, group = "Grade"), #manual c() value to avoid forced duplicates
     list(values = c(4), label = "Female", num = 25, group_num = 3, group = "Gender"),
     list(values = c(3), label = "Male", num = 26, group_num = 3, group = "Gender"),
     list(values = c(28), label = "Migrant Youth", num = 27, group_num = 4, group = "Student Subgroup"),

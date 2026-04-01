@@ -9,5 +9,5 @@ Description: Tools for classification, labeling, schema generation, and export o
 License: MIT
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3
 URL: https://jaubele.github.io/cdetidy

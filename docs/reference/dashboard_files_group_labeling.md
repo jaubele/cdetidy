@@ -1,0 +1,43 @@
+# Apply dashboard classification mapping to one or more columns
+
+Applies a hardcoded classification map to one or more columns in a
+dashboard-oriented dataset. For each input column, the function
+generates new output columns using user-defined prefixes:
+\`\<prefix\>\_label\`, \`\<prefix\>\_num\`, \`\<prefix\>\_group_num\`,
+and \`\<prefix\>\_group\`. It also interactively resolves duplicate
+codes that appear in more than one group.
+
+## Usage
+
+``` r
+dashboard_files_group_labeling(df, var_names, output_names)
+```
+
+## Arguments
+
+- df:
+
+  A data frame containing one or more columns to classify.
+
+- var_names:
+
+  A character vector of column names in \`df\` to which the
+  classification should be applied.
+
+- output_names:
+
+  A character vector of prefixes for the new output columns. Must be the
+  same length as \`var_names\`.
+
+## Value
+
+The original data frame with new columns added for each input variable:
+\`\<prefix\>\_label\`, \`\<prefix\>\_num\`, \`\<prefix\>\_group_num\`,
+and \`\<prefix\>\_group\`.
+
+## Details
+
+\- Classification values like \`"AA"\`, \`"EL"\`, \`"SED"\` are matched
+to a built-in classification map. - Duplicate values across multiple
+entries prompt the user to choose which label to apply. - The function
+raises an error if any input values are unmatched.

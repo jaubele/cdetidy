@@ -1,0 +1,122 @@
+# Safely write a dataset to CSV with metadata logging
+
+Writes a data frame to a standardized T drive location (or user-defined
+path), enforces character types on specific ID columns, applies optional
+compression, and logs metadata to a central export log. Supports both
+fact and dimension tables and validates metadata inputs before writing.
+
+## Usage
+
+``` r
+safe_fwrite(
+  data,
+  path = NULL,
+  char_cols = c("cds", "county_code", "district_code", "school_code"),
+  compress = FALSE,
+  n_check = 6,
+  log_metadata = NULL,
+  data_year = NULL,
+  data_source = NULL,
+  data_type = NULL,
+  data_description = NA,
+  user_note = NA,
+  table_name = NULL,
+  dim_description = NULL,
+  log_path = "export_log.csv",
+  canonical_table_id = NULL,
+  dimension_type = NULL
+)
+```
+
+## Arguments
+
+- data:
+
+  A data frame to export.
+
+- path:
+
+  Optional. Full file path to write the CSV. If \`NULL\`, a path is
+  generated automatically based on metadata.
+
+- char_cols:
+
+  A character vector of column names to convert to character before
+  export. Default is \`c("cds", "county_code", "district_code",
+  "school_code")\`.
+
+- compress:
+
+  Logical. If \`TRUE\`, appends \`.gz\` to the filename and compresses
+  the output. Default is \`FALSE\`.
+
+- n_check:
+
+  Integer. Number of rows to preview after writing. Default is 6.
+
+- log_metadata:
+
+  A named list containing metadata fields, including \`data_year\`,
+  \`data_source\`, \`data_description\`, and \`user_note\`. If \`NULL\`,
+  the function uses the corresponding individual arguments.
+
+- data_year:
+
+  The year the data represents. Required if \`log_metadata\` is not
+  supplied.
+
+- data_source:
+
+  A short label identifying the source of the data (e.g., \`"CDE"\`,
+  \`"Dashboard"\`, \`"Assessment"\`).
+
+- data_type:
+
+  A short label identifying what type of data you are writing out (e.g.,
+  "\`CAST\`", "\`SBAC\`", "\`Absenteeism\`", dims)
+
+- data_description:
+
+  A short description of the dataset (e.g., \`"Chronic absenteeism rates
+  by subgroup"\`).
+
+- user_note:
+
+  A note describing the nature of the export. Must include \`"fact"\` or
+  \`"dim"\` to indicate table type.
+
+- table_name:
+
+  The base name of the output table.
+
+- dim_description:
+
+  Optional. A short label used to describe the dimension (e.g.,
+  \`"race_ethnicity"\`). Appended to the file name.
+
+- log_path:
+
+  The path to the export log CSV. Default is \`"export_log.csv"\`.
+
+- canonical_table_id:
+
+  Optional. A unique identifier for the exported table. Defaults to
+  \`table_name\` if \`NULL\`.
+
+- dimension_type:
+
+  Optional. One of \`"universal"\`, \`"annualized"\`, or \`"other"\`.
+  Applies to dimension tables.
+
+## Value
+
+Invisibly returns \`NULL\`. The function writes the data to disk and
+logs metadata to a central log file.
+
+## Details
+
+\- Validates required metadata fields and data source types. - Pads
+dimension codes as needed and enforces character types on key fields. -
+If \`log_path\` exists, overwrites log entry for the same
+\`canonical_table_id\`, otherwise appends a new row. - Automatically
+creates directories if needed and checks file size after writing.

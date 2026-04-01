@@ -1,0 +1,55 @@
+# Generate SQL BULK INSERT statements for warehouse flat files
+
+Creates a character vector of \`BULK INSERT\` SQL statements for loading
+flat files into SQL Server tables. Uses metadata from a flagged schema
+(e.g., from \`sql_schema_log()\` or \`flag_schema_changes()\`) to
+determine table names and file paths, and emits standardized SQL for
+bulk-loading.
+
+## Usage
+
+``` r
+sql_insert_coder(
+  schema_flagged,
+  data_base_dir = "T:/Data Warehouse/Warehouse Ready Files",
+  combined_folder = NULL,
+  universal_folder = "universal"
+)
+```
+
+## Arguments
+
+- schema_flagged:
+
+  A data frame containing schema metadata, including columns: -
+  \`table_name\`: Name of the table to load - \`data_source\`: Data
+  source type (e.g., \`"CDE"\`, \`"Dashboard"\`, \`"Assessment"\`) -
+  \`dimension_type\`: Optional type (\`"universal"\` or other) to
+  determine subfolder structure
+
+- data_base_dir:
+
+  Root directory where data files are stored. Default is \`"T:/Data
+  Warehouse/Warehouse Ready Files"\`.
+
+- combined_folder:
+
+  The name of the subdirectory (e.g., \`"2019_2024"\`) that contains the
+  flat files. Required.
+
+- universal_folder:
+
+  Folder name for universal dimensions. Default is \`"universal"\`.
+
+## Value
+
+A character vector of \`BULK INSERT\` SQL statements, one per table.
+Each statement includes: - Path to the \`.csv\` file - Error log
+configuration - A statement to increment \`@\_\_bulk_executed\`
+
+## Details
+
+\- File paths are validated, and missing files cause the function to
+fail early with a helpful message. - Uses \`sql_ident()\` to quote table
+names and escapes single quotes in file paths. - Assumes CSV files are
+encoded using Windows ANSI (\`CODEPAGE = 'ACP'\`) and start on line 2.

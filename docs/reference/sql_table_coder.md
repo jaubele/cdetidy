@@ -1,0 +1,47 @@
+# Generate SQL CREATE TABLE statements from schema metadata
+
+Converts a flagged schema log (e.g., from \`sql_schema_log()\` or
+\`flag_schema_changes()\`) into SQL \`CREATE TABLE\` statements for each
+table in the dataset. Includes metadata headers, optional
+drop-and-rebuild behavior, and primary key constraints.
+
+## Usage
+
+``` r
+sql_table_coder(schema_flagged)
+```
+
+## Arguments
+
+- schema_flagged:
+
+  A data frame representing schema metadata. Must include the following
+  columns: - \`table_name\`, \`column_name\`, \`sql_type\`,
+  \`null_flag\` - \`is_primary_key\`, \`is_foreign_key\`,
+  \`foreign_key_ref\` - \`user_note\`, \`user\`, \`timestamp\`,
+  \`rebuild_flag\`
+
+## Value
+
+A character vector of SQL code blocks, one per table, formatted with
+metadata comments and valid T-SQL.
+
+## Details
+
+\- Each block is prefixed with a detailed comment including who created
+the schema, when, and for what purpose. - If any column in a table has
+\`rebuild_flag == 1\`, the block starts with \`DROP TABLE IF EXISTS\`. -
+Otherwise, the block is wrapped in an \`IF NOT EXISTS\` check to avoid
+duplicate creation. - Primary keys are included via \`CONSTRAINT
+pk\_\<table_name\> PRIMARY KEY (...)\`.
+
+## Examples
+
+``` r
+if (FALSE) { # \dontrun{
+schema_log <- readr::read_csv("primary_sql_schema_log.csv")
+flagged <- flag_schema_changes(schema_log, year = 2023)
+sql_blocks <- sql_table_coder(flagged)
+cat(sql_blocks[1])
+} # }
+```

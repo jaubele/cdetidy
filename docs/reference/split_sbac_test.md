@@ -1,0 +1,46 @@
+# Split SBAC test data into ELA and Math datasets
+
+Splits a dataset with a \`"test"\` column (coded as 1 = ELA, 2 = Math)
+into two separate data frames. Assigns the resulting datasets to the
+global environment using names based on a user-defined base name.
+
+## Usage
+
+``` r
+split_sbac_test(data, base_name)
+```
+
+## Arguments
+
+- data:
+
+  A data frame containing a \`"test"\` column with values \`1\` (ELA)
+  and \`2\` (Math).
+
+- base_name:
+
+  A base string used to generate object names. Resulting objects will be
+  named \`\<base_name\>\_ela\` and \`\<base_name\>\_math\`.
+
+## Value
+
+Invisibly returns a list with two components: - \`ela\`: The subset of
+rows with \`test == 1\` - \`math\`: The subset of rows with \`test ==
+2\`
+
+## Details
+
+\- Rows with \`test == 1\` are assumed to be ELA records; \`test == 2\`
+are assumed to be Math. - Warnings are printed if unexpected values are
+present in either subset. - Resulting datasets are assigned to the
+global environment with descriptive names. - Use \`invisible()\` to
+suppress printing if calling programmatically.
+
+## Examples
+
+``` r
+if (FALSE) { # \dontrun{
+split_sbac_test(sbac_data, base_name = "sbac23")
+# Creates sbac23_ela and sbac23_math in your environment
+} # }
+```
