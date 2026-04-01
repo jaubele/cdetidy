@@ -89,11 +89,10 @@ assessment_files_group_labeling <- function(df, var_names, output_names) {
     
     grade_num <- as.numeric(df$grade)
     
-    grade_num <- dplyr::recode(
-      grade_num,
-      `99` = 991,
-      `8` = 81,
-      .default = grade_num)
+    grade_num <- dplyr::case_when(
+      grade_num == 99 ~ 991,
+      grade_num == 8 ~ 81,
+      TRUE ~ grade_num)
     
     df$grade <- grade_num
   }
