@@ -61,7 +61,7 @@ resolve_same_level_cds <- function(df,
   
   message(
     "resolve_same_level_cds: ", nrow(conflicts),
-    " same-level CDS conflict(s) detected. Appending suffixes to ", altered_col, "."
+    " same-level CDS conflict(s) detected. Appending suffixes to ", cds_col, "."
   )
   print(conflicts)
   
@@ -80,20 +80,26 @@ resolve_same_level_cds <- function(df,
     dplyr::mutate(school_rank = dplyr::row_number()) %>%
     dplyr::ungroup() %>%
     dplyr::mutate(
-      cds_suffix = dplyr::if_else(school_rank == 1L, "", as.character(school_rank))    ) %>%
+      cds_suffix = dplyr::if_else(school_rank == 1L, "", as.character(school_rank))
+    ) %>%
     dplyr::select(
       dplyr::all_of(c(cds_col, org_level_col, school_col)),
       cds_suffix
     )
   
-  # Join suffix map and update altered_cds
+  # Join suffix map, append suffix to cds, and flag altered_cds = 1
   df <- df %>%
     dplyr::left_join(suffix_map, by = c(cds_col, org_level_col, school_col)) %>%
     dplyr::mutate(
+      !!cds_col := dplyr::if_else(
+        !is.na(cds_suffix) & cds_suffix != "",
+        paste0(.data[[cds_col]], cds_suffix),
+        as.character(.data[[cds_col]])
+      ),
       !!altered_col := dplyr::if_else(
         !is.na(cds_suffix) & cds_suffix != "",
-        paste0(.data[[altered_col]], cds_suffix),
-        as.character(.data[[altered_col]])
+        1L,
+        .data[[altered_col]]
       )
     ) %>%
     dplyr::select(-cds_suffix)
