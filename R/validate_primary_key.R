@@ -9,6 +9,7 @@
 #' @param full_run Logical. If `TRUE`, checks the entire dataset. Default is `FALSE`.
 #' @param seed An integer used to seed the random sample (only applies if `full_run = FALSE`). Default is 1234.
 #' @param show_examples Integer. If duplicates are found, print up to this many example offending key combinations (after de-duplicating). Set to 0 to suppress examples. Default is 10.
+#' @param return_problem_data Returns a dataset of only problem, duplicate cDS codes
 #'
 #' @return Invisibly returns `NULL`. Prints a success or failure message indicating whether the key uniquely identifies rows.
 #'
@@ -23,7 +24,7 @@
 #'
 #' @export
 
-validate_primary_key <- function(data, key_cols, sample_n = 10000, full_run = FALSE, seed = 1234, show_examples = 10) {
+validate_primary_key <- function(data, key_cols, sample_n = 10000, full_run = FALSE, seed = 1234, show_examples = 10, return_problem_data = FALSE) {
 
   data <- as.data.frame(data)  # ensure base R compatibility
 
@@ -58,14 +59,55 @@ validate_primary_key <- function(data, key_cols, sample_n = 10000, full_run = FA
   }
 
   # 4) Duplicate check
-  dup_flag <- duplicated(data[, key_cols, drop = FALSE])
-  dup_n    <- sum(dup_flag)
-
+  dup_flag <- duplicated(data[, key_cols, drop = FALSE]) |
+    duplicated(data[, key_cols, drop = FALSE], fromLast = TRUE)
+  
+  dup_n <- sum(dup_flag)
+  
+  problem_data <- NULL
+  
+  # Success case FIRST
   if (dup_n == 0 && all(na_counts == 0)) {
-    message("\033[32m✅ These columns [", paste(key_cols, collapse = ", "), "] comprise the primary key",
-            if (!full_run && total_rows > sample_n) " (within this sample)", ".", "\033[0m")
-    return(invisible(list(pass = TRUE, duplicates = 0, na = na_counts)))
+    message("\033[32m✅ These columns [", paste(key_cols, collapse = ", "), 
+            "] comprise the primary key",
+            if (!full_run && total_rows > sample_n) " (within this sample)", 
+            ".", "\033[0m")
+    
+    result <- list(
+      pass = TRUE,
+      duplicates = 0,
+      na = na_counts,
+      problem_data = NULL
+    )
+    
+    return(invisible(result))
   }
+  
+  # Failure case
+  if (dup_n > 0) {
+    problem_data <- data[dup_flag, , drop = FALSE]
+    
+    message("\033[31m❌ ", dup_n, " duplicate row(s) by [", paste(key_cols, collapse = ", "), "].\033[0m")
+    
+    dups <- problem_data[, key_cols, drop = FALSE]
+    if (nrow(dups) > show_examples) dups <- head(dups, show_examples)
+    
+    message("🔎 Example offending keys:")
+    print(unique(dups))
+  }
+  
+  # Final return
+  result <- list(
+    pass = FALSE,
+    duplicates = dup_n,
+    na = na_counts
+  )
+  
+  if (return_problem_data) {
+    result$problem_data <- problem_data
+  }
+  
+  invisible(result)
 
   # 5) Report duplicates (with examples)
   if (dup_n > 0) {
@@ -76,5 +118,15 @@ validate_primary_key <- function(data, key_cols, sample_n = 10000, full_run = FA
     print(unique(dups))
   }
 
-  invisible(list(pass = FALSE, duplicates = dup_n, na = na_counts))
+  result <- list(
+    pass = (dup_n == 0 && all(na_counts == 0)),
+    duplicates = dup_n,
+    na = na_counts
+  )
+  
+  if (return_problem_data) {
+    result$problem_data <- problem_data
+  }
+  
+  invisible(result)
 }

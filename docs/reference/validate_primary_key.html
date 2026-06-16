@@ -46,7 +46,8 @@ Can be run on a full dataset or a sampled subset to improve performance on large
 <span>  sample_n <span class="op">=</span> <span class="fl">10000</span>,</span>
 <span>  full_run <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  seed <span class="op">=</span> <span class="fl">1234</span>,</span>
-<span>  show_examples <span class="op">=</span> <span class="fl">10</span></span>
+<span>  show_examples <span class="op">=</span> <span class="fl">10</span>,</span>
+<span>  return_problem_data <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -76,6 +77,10 @@ Can be run on a full dataset or a sampled subset to improve performance on large
 
 <dt id="arg-show-examples">show_examples<a class="anchor" aria-label="anchor" href="#arg-show-examples"></a></dt>
 <dd><p>Integer. If duplicates are found, print up to this many example offending key combinations (after de-duplicating). Set to 0 to suppress examples. Default is 10.</p></dd>
+
+
+<dt id="arg-return-problem-data">return_problem_data<a class="anchor" aria-label="anchor" href="#arg-return-problem-data"></a></dt>
+<dd><p>Returns a dataset of only problem, duplicate cDS codes</p></dd>
 
 </dl></div>
     <div class="section level2">

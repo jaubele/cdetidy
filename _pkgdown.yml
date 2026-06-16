@@ -29,6 +29,7 @@ reference:
       - get_conflicting_cds
       - replace_conflicting_cds
       - resolve_conflicting_cds
+      - resolve_same_level_cds
 
   - title: Schema & SQL Generation
     desc: "Tools for generating and validating SQL table structures and constraints."

@@ -10,7 +10,8 @@ validate_primary_key(
   sample_n = 10000,
   full_run = FALSE,
   seed = 1234,
-  show_examples = 10
+  show_examples = 10,
+  return_problem_data = FALSE
 )
 }
 \arguments{
@@ -25,6 +26,8 @@ validate_primary_key(
 \item{seed}{An integer used to seed the random sample (only applies if `full_run = FALSE`). Default is 1234.}
 
 \item{show_examples}{Integer. If duplicates are found, print up to this many example offending key combinations (after de-duplicating). Set to 0 to suppress examples. Default is 10.}
+
+\item{return_problem_data}{Returns a dataset of only problem, duplicate cDS codes}
 }
 \value{
 Invisibly returns `NULL`. Prints a success or failure message indicating whether the key uniquely identifies rows.
