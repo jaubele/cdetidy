@@ -93,7 +93,7 @@ resolve_same_level_cds <- function(df,
       !!altered_col := dplyr::if_else(
         !is.na(cds_suffix) & cds_suffix != "",
         paste0(.data[[altered_col]], cds_suffix),
-        .data[[altered_col]]
+        as.character(.data[[altered_col]])
       )
     ) %>%
     dplyr::select(-cds_suffix)
