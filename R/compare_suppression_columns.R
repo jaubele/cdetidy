@@ -28,16 +28,28 @@
 #'
 #' @export
 
-# Requires your star_scan() util available in the session
+# Requires star_scan() util available in the session
 compare_suppression_columns <- function(df_prev, df_curr) {
-  collapse_vec <- function(x) if (length(x)) paste(sort(x), collapse = ", ") else "(none)"
+  name1 <- deparse(substitute(df_prev))
+  name2 <- deparse(substitute(df_curr))
   
   prev_cols <- star_scan(df_prev)$columns
   curr_cols <- star_scan(df_curr)$columns
   
-  tibble::tibble(
-    new_suppressed_cols       = collapse_vec(setdiff(curr_cols, prev_cols)),
-    stopped_being_suppressed  = collapse_vec(setdiff(prev_cols, curr_cols)),
-    unchanged_suppressed_cols = collapse_vec(intersect(prev_cols, curr_cols))
-  )
+  new_suppressed      <- setdiff(curr_cols, prev_cols)
+  stopped_suppressed  <- setdiff(prev_cols, curr_cols)
+  
+  if (length(new_suppressed) > 0) {
+    cat("\nNew suppressed columns in", name2, "not in", name1, ":\n",
+        paste(new_suppressed, collapse = ", "), "\n")
+  } else {
+    cat("\nNo new suppressed columns in", name2, "\n")
+  }
+  
+  if (length(stopped_suppressed) > 0) {
+    cat("\nColumns suppressed in", name1, "but no longer in", name2, ":\n",
+        paste(stopped_suppressed, collapse = ", "), "\n")
+  } else {
+    cat("\nNo columns dropped from suppression in", name2, "\n")
+  }
 }
