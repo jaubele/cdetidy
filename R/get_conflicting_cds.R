@@ -13,8 +13,11 @@
 #' @export
 
 get_conflicting_cds <- function(df, cds_col = "cds", org_level_col = "org_level") {
-  df %>%
-    group_by(across(all_of(cds_col))) %>%
-    summarize(unique_org_levels = n_distinct(.data[[org_level_col]]), .groups = "drop") %>%
-    filter(unique_org_levels > 1)
+  df |>
+    dplyr::group_by(dplyr::across(dplyr::all_of(cds_col))) |>
+    dplyr::summarise(
+      unique_org_levels = dplyr::n_distinct(.data[[org_level_col]]),
+      .groups = "drop"
+    ) |>
+    dplyr::filter(.data$unique_org_levels > 1)
 }

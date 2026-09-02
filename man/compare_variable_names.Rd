@@ -12,8 +12,9 @@ compare_variable_names(df1, df2)
 \item{df2}{The second data frame to compare.}
 }
 \value{
-A tibble summarizing the comparison (indicating whether the columns are identical),
-and printed messages that describe which columns are unique to each data frame. No object is returned explicitly.
+Invisibly returns a one-row tibble containing the dataset labels,
+  whether names and order are identical, and list-columns of names unique to
+  each dataset. Differences are also printed for interactive review.
 }
 \description{
 Compares the column names of two data frames and prints a summary of whether they are identical,

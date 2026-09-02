@@ -22,6 +22,10 @@
 #' types and optionally cleaned of `problems` attributes.
 #'
 #' @examples
+#' grad19 <- data.frame(
+#'   grad_count = c("12", "*", "8")
+#' )
+#' suppress_cols <- star_scan(grad19, print = FALSE)$columns
 #' grad19 <- coerce_suppression_cols(grad19, suppress_cols)
 #'
 #' @export
@@ -61,14 +65,14 @@ coerce_suppression_cols <- function(df,
     }
   }
   
-  df <- df %>% mutate(across(all_of(cols), clean_and_cast))
+  df <- dplyr::mutate(df, dplyr::across(dplyr::all_of(cols), clean_and_cast))
   
   # Optional: wipe any lingering readr "problems" attributes
   if (wipe_problems_attr) {
     if (wipe_scope == "all") {
-      df <- df %>% mutate(across(everything(), ~ { attr(.x, "problems") <- NULL; .x }))
+      df <- dplyr::mutate(df, dplyr::across(dplyr::everything(), ~ { attr(.x, "problems") <- NULL; .x }))
     } else {
-      df <- df %>% mutate(across(all_of(cols), ~ { attr(.x, "problems") <- NULL; .x }))
+      df <- dplyr::mutate(df, dplyr::across(dplyr::all_of(cols), ~ { attr(.x, "problems") <- NULL; .x }))
     }
   }
   

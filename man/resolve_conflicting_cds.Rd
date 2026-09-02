@@ -23,8 +23,8 @@ resolve_conflicting_cds(
 \item{school_col}{A string specifying the column name containing the school name, used by
 `resolve_same_level_cds()`. Default is `"school_name"`.}
 
-\item{altered_col}{A string specifying the column name that holds the modified CDS values.
-Default is `"altered_cds"`.}
+\item{altered_col}{A string specifying the 0/1 flag identifying modified CDS
+rows. Default is `"altered_cds"`.}
 }
 \value{
 A modified data frame with resolved CDS values. Two attributes are attached:
@@ -45,6 +45,6 @@ to detect and resolve two distinct types of CDS conflict:
   \item{Same-level conflicts}{The same CDS code appears at the same organization level but
     with different school names (e.g., multiple virtual schools sharing one CDS at level `"S"`).
     Resolved by `resolve_same_level_cds()`, which appends `"2"`, `"3"`, etc. to
-    `altered_cds` for the second and subsequent schools (ranked alphabetically).}
+    the CDS value for the second and subsequent schools (ranked alphabetically).}
 }
 }

@@ -27,10 +27,12 @@ validate_primary_key(
 
 \item{show_examples}{Integer. If duplicates are found, print up to this many example offending key combinations (after de-duplicating). Set to 0 to suppress examples. Default is 10.}
 
-\item{return_problem_data}{Returns a dataset of only problem, duplicate cDS codes}
+\item{return_problem_data}{Logical. Include all rows with duplicated key
+combinations in the returned result.}
 }
 \value{
-Invisibly returns `NULL`. Prints a success or failure message indicating whether the key uniquely identifies rows.
+Invisibly returns a list with `pass`, `duplicates`, and `na`.
+  When `return_problem_data = TRUE`, the list also contains `problem_data`.
 }
 \description{
 Checks whether a set of columns uniquely identify rows in a data frame.
@@ -43,6 +45,15 @@ Can be run on a full dataset or a sampled subset to improve performance on large
 - Messages use colored console output (green = valid, red = invalid).
 }
 \examples{
-validate_primary_key(mydata, key_cols = c("student_id", "year"))
+student_data <- data.frame(
+  student_id = c(1, 2, 3),
+  year = c(2024, 2024, 2024)
+)
+
+validate_primary_key(
+  student_data,
+  key_cols = c("student_id", "year"),
+  full_run = TRUE
+)
 
 }

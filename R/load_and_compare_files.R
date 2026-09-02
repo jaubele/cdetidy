@@ -87,8 +87,6 @@ load_and_compare_files <- function(
     show_compare_details = TRUE,
     also_run_compare_function = FALSE) {
 
-  library(dplyr); library(stringr)
-
   `%||%` <- function(x, y) if (is.null(x) || (length(x) == 1 && is.na(x))) y else x
 
   join_method <- match.arg(join_method)

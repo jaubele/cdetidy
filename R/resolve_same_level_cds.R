@@ -7,7 +7,7 @@
 #'
 #' Resolution strategy: within each conflicting (cds, org_level) group, schools are ranked
 #' alphabetically by name. The first school (rank 1) retains the original `altered_cds` value.
-#' Subsequent schools receive a numeric suffix (`"2"`, `"3"`, etc.) appended to `altered_cds`,
+#' Subsequent schools receive a numeric suffix (`"2"`, `"3"`, etc.) appended to the CDS value,
 #' making each school's identifier unique. Alphabetical ranking ensures the mapping is
 #' deterministic across repeated runs on the same data.
 #'
@@ -16,9 +16,10 @@
 #' @param cds_col A string specifying the column name containing the CDS code. Default is `"cds"`.
 #' @param org_level_col A string specifying the column name containing the organization level. Default is `"org_level"`.
 #' @param school_col A string specifying the column name containing the school name. Default is `"school_name"`.
-#' @param altered_col A string specifying the column name to update with suffixed values. Default is `"altered_cds"`.
+#' @param altered_col A string specifying the 0/1 flag identifying modified rows. Default is `"altered_cds"`.
 #'
-#' @return A modified data frame with `altered_cds` updated for any same-level conflicts.
+#' @return A modified data frame with suffixed CDS values and `altered_cds = 1`
+#'   for any modified rows.
 #'   A `"same_level_conflicts"` attribute is attached to the returned data frame, containing
 #'   a summary of detected conflicts (one row per conflicting CDS + org_level group).
 #'   If no conflicts are detected the data frame is returned unchanged with an empty

@@ -24,11 +24,11 @@ expand_cds_codes <- function(df,
                              district_col = "district_code",
                              school_col = "school_code") {
   df <- df %>%
-    mutate(
-      !!county_col   := str_pad(str_sub(.data[[cds_col]], 1, 2), 2, pad = "0"),
-      !!district_col := str_pad(str_sub(.data[[cds_col]], 3, 7), 5, pad = "0"),
-      !!school_col   := str_pad(str_sub(.data[[cds_col]], 8, 14), 7, pad = "0")
+    dplyr::mutate(
+      !!county_col   := stringr::str_pad(stringr::str_sub(.data[[cds_col]], 1, 2), 2, pad = "0"),
+      !!district_col := stringr::str_pad(stringr::str_sub(.data[[cds_col]], 3, 7), 5, pad = "0"),
+      !!school_col   := stringr::str_pad(stringr::str_sub(.data[[cds_col]], 8, 14), 7, pad = "0")
     )
-  
+
   return(df)
 }

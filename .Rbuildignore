@@ -6,3 +6,6 @@
 ^README\.Rmd$
 ^\.positai$
 ^\.claude$
+^\.RData$
+^\.Rhistory$
+^LICENSE\.md$

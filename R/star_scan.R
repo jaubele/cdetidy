@@ -17,23 +17,31 @@
 #' }
 #'
 #' @examples
-#' suppress_cols <- star_scan(chronic24)$columns 
+#' chronic_example <- data.frame(
+#'   enrollment = c("100", "75", "50"),
+#'   chronic_count = c("10", "*", "5"),
+#'   chronic_rate = c("10.0", "*", "10.0")
+#' )
+#'
+#' scan_result <- star_scan(chronic_example)
+#' scan_result$columns
+#' scan_result$summary
 #'
 #' @export
 
 star_scan <- function(df, pattern = "*", fixed = TRUE, print = TRUE) {
   # Internal helpers (scoped inside the wrapper)
   columns_with_star <- function(x) {
-    has_star <- map_lgl(x, ~ any(grepl(pattern, as.character(.x), fixed = fixed, useBytes = TRUE), na.rm = TRUE))
+    has_star <- purrr::map_lgl(x, ~ any(grepl(pattern, as.character(.x), fixed = fixed, useBytes = TRUE), na.rm = TRUE))
     names(x)[has_star]
   }
   star_summary <- function(x) {
-    tibble(
+    tibble::tibble(
       column = names(x),
-      n_star = map_int(x, ~ sum(grepl(pattern, as.character(.x), fixed = fixed, useBytes = TRUE), na.rm = TRUE))
+      n_star = purrr::map_int(x, ~ sum(grepl(pattern, as.character(.x), fixed = fixed, useBytes = TRUE), na.rm = TRUE))
     ) |>
-      filter(n_star > 0) |>
-      arrange(desc(n_star))
+      dplyr::filter(.data$n_star > 0) |>
+      dplyr::arrange(dplyr::desc(.data$n_star))
   }
   
   cols <- columns_with_star(df)

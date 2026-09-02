@@ -9,9 +9,11 @@
 #' @param full_run Logical. If `TRUE`, checks the entire dataset. Default is `FALSE`.
 #' @param seed An integer used to seed the random sample (only applies if `full_run = FALSE`). Default is 1234.
 #' @param show_examples Integer. If duplicates are found, print up to this many example offending key combinations (after de-duplicating). Set to 0 to suppress examples. Default is 10.
-#' @param return_problem_data Returns a dataset of only problem, duplicate cDS codes
+#' @param return_problem_data Logical. Include all rows with duplicated key
+#'   combinations in the returned result.
 #'
-#' @return Invisibly returns `NULL`. Prints a success or failure message indicating whether the key uniquely identifies rows.
+#' @return Invisibly returns a list with `pass`, `duplicates`, and `na`.
+#'   When `return_problem_data = TRUE`, the list also contains `problem_data`.
 #'
 #' @details
 #' - Columns listed in `key_cols` must all exist in `data`.
@@ -20,7 +22,16 @@
 #' - Messages use colored console output (green = valid, red = invalid).
 #'
 #' @examples
-#' validate_primary_key(mydata, key_cols = c("student_id", "year"))
+#' student_data <- data.frame(
+#'   student_id = c(1, 2, 3),
+#'   year = c(2024, 2024, 2024)
+#' )
+#'
+#' validate_primary_key(
+#'   student_data,
+#'   key_cols = c("student_id", "year"),
+#'   full_run = TRUE
+#' )
 #'
 #' @export
 
@@ -99,27 +110,6 @@ validate_primary_key <- function(data, key_cols, sample_n = 10000, full_run = FA
   # Final return
   result <- list(
     pass = FALSE,
-    duplicates = dup_n,
-    na = na_counts
-  )
-  
-  if (return_problem_data) {
-    result$problem_data <- problem_data
-  }
-  
-  invisible(result)
-
-  # 5) Report duplicates (with examples)
-  if (dup_n > 0) {
-    message("\033[31m❌ ", dup_n, " duplicate row(s) by [", paste(key_cols, collapse = ", "), "].\033[0m")
-    dups <- data[dup_flag, key_cols, drop = FALSE]
-    if (nrow(dups) > show_examples) dups <- head(dups, show_examples)
-    message("🔎 Example offending keys:")
-    print(unique(dups))
-  }
-
-  result <- list(
-    pass = (dup_n == 0 && all(na_counts == 0)),
     duplicates = dup_n,
     na = na_counts
   )

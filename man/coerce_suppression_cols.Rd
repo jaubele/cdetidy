@@ -42,6 +42,10 @@ function attempts to intelligently convert values to `integer` if they appear
 to be whole numbers, unless `prefer_integer_when_whole = FALSE`.
 }
 \examples{
+grad19 <- data.frame(
+  grad_count = c("12", "*", "8")
+)
+suppress_cols <- star_scan(grad19, print = FALSE)$columns
 grad19 <- coerce_suppression_cols(grad19, suppress_cols)
 
 }
