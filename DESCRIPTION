@@ -1,6 +1,8 @@
 Package: cdetidy
 Title: Tools for Working with CDE Datasets
 Version: 0.1.5
+Depends:
+    R (>= 4.1.0)
 Authors@R: c(
   person("Joseph", "Aubele", email = "jaubele@ocde.us", role = c("aut", "cre")),
   person("Caleb", "Mitchell", role = "aut"),
@@ -8,7 +10,6 @@ Authors@R: c(
 Description: Tools for classification, labeling, schema generation, and export of public CDE datasets.
 License: MIT
 Encoding: UTF-8
-LazyData: true
 URL: https://jaubele.github.io/cdetidy
 Imports:
     cli,
