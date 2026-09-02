@@ -8,7 +8,8 @@ replace_conflicting_cds(
   df,
   conflicting_cds_df,
   cds_col = "cds",
-  org_level_col = "org_level"
+  org_level_col = "org_level",
+  altered_col = "altered_cds"
 )
 }
 \arguments{
@@ -19,9 +20,13 @@ replace_conflicting_cds(
 \item{cds_col}{The name of the column that contains the CDS code. Default is `"cds"`.}
 
 \item{org_level_col}{The name of the column that contains the org level. Default is `"org_level"`.}
+
+\item{altered_col}{The name of the 0/1 flag identifying modified rows.
+Default is `"altered_cds"`.}
 }
 \value{
-A data frame with updated CDS values. Adds a temporary `altered_cds` column that marks modified rows with `1`.
+A data frame with updated CDS values and a 0/1 flag column,
+  named according to `altered_col`, identifying modified rows.
 }
 \description{
 Detects CDS codes that appear at multiple organization levels and appends `"9999"` to the

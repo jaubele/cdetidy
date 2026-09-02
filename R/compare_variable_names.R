@@ -7,8 +7,9 @@
 #' @param df1 The first data frame to compare.
 #' @param df2 The second data frame to compare.
 #'
-#' @return A tibble summarizing the comparison (indicating whether the columns are identical),
-#' and printed messages that describe which columns are unique to each data frame. No object is returned explicitly.
+#' @return Invisibly returns a one-row tibble containing the dataset labels,
+#'   whether names and order are identical, and list-columns of names unique to
+#'   each dataset. Differences are also printed for interactive review.
 #'
 #' @examples
 #' df1 <- data.frame(a = 1, b = 2)
@@ -29,9 +30,12 @@ compare_variable_names <- function(df1, df2) {
   diff_2_to_1 <- setdiff(cols2, cols1)
 
   # Create and print the summary tibble
-  summary_df <- tibble(
-    Comparison = paste(name1, "vs", name2),
-    Identical = identical_cols
+  summary_df <- tibble::tibble(
+    previous = name1,
+    current = name2,
+    identical = identical_cols,
+    only_previous = list(diff_1_to_2),
+    only_current = list(diff_2_to_1)
   )
 
   # Print differences as separate messages
@@ -46,4 +50,6 @@ compare_variable_names <- function(df1, df2) {
   } else {
     cat("\nNo variables found in", name2, "that are missing from", name1, "\n")
   }
+
+  invisible(summary_df)
 }

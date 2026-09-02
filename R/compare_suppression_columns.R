@@ -7,7 +7,7 @@
 #' @param df_prev A data frame representing the earlier or baseline dataset.
 #' @param df_curr A data frame representing the newer or updated dataset.
 #'
-#' @return A tibble with three columns:
+#' @return Invisibly returns a one-row tibble with three list-columns:
 #' \describe{
 #'   \item{new_suppressed_cols}{A list of column names that are newly suppressed in `df_curr` but not in `df_prev`}
 #'   \item{stopped_being_suppressed}{Columns that were suppressed in `df_prev` but are no longer suppressed in `df_curr`}
@@ -38,6 +38,7 @@ compare_suppression_columns <- function(df_prev, df_curr) {
   
   new_suppressed      <- setdiff(curr_cols, prev_cols)
   stopped_suppressed  <- setdiff(prev_cols, curr_cols)
+  unchanged_suppressed <- intersect(prev_cols, curr_cols)
   
   if (length(new_suppressed) > 0) {
     cat("\nNew suppressed columns in", name2, "not in", name1, ":\n",
@@ -52,4 +53,10 @@ compare_suppression_columns <- function(df_prev, df_curr) {
   } else {
     cat("\nNo columns dropped from suppression in", name2, "\n")
   }
+
+  invisible(tibble::tibble(
+    new_suppressed_cols = list(new_suppressed),
+    stopped_being_suppressed = list(stopped_suppressed),
+    unchanged_suppressed_cols = list(unchanged_suppressed)
+  ))
 }

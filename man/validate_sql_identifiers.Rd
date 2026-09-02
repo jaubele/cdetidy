@@ -31,7 +31,16 @@ Checks that each name in a character vector follows SQL identifier rules:
 - Colored error messages are printed for easier debugging in interactive sessions.
 }
 \examples{
-validate_sql_identifiers(c("student_id", "_school_code"))  # ✅ valid
-validate_sql_identifiers(c("123bad", "with space"), type = "column")  # ❌ will error
+validate_sql_identifiers(
+  c("student_id", "_school_code")
+)
+
+try(
+  validate_sql_identifiers(
+    c("123bad", "with space"),
+    type = "column"
+  ),
+  silent = TRUE
+)
 
 }

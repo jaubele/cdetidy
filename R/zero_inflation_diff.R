@@ -13,6 +13,8 @@
 #' @param numeric_cols Optional. A character vector of column names to limit comparison to specific
 #'   numeric columns. If `NULL`, the function auto-detects numeric or numeric-like columns.
 #' @param verbose Logical. If `TRUE`, prints information about which columns are being compared.
+#' @param from_enc Character string specifying the assumed source encoding for
+#'   column names and character values. Default is `"latin1"`.
 #'
 #' @return A data frame with one row per group-variable/metric combination, including:
 #' \describe{

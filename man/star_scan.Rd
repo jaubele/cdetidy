@@ -29,6 +29,14 @@ a list with the names of the columns containing matches and a summary of how man
 matches were found in each.
 }
 \examples{
-suppress_cols <- star_scan(chronic24)$columns 
+chronic_example <- data.frame(
+  enrollment = c("100", "75", "50"),
+  chronic_count = c("10", "*", "5"),
+  chronic_rate = c("10.0", "*", "10.0")
+)
+
+scan_result <- star_scan(chronic_example)
+scan_result$columns
+scan_result$summary
 
 }

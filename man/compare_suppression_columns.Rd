@@ -12,7 +12,7 @@ compare_suppression_columns(df_prev, df_curr)
 \item{df_curr}{A data frame representing the newer or updated dataset.}
 }
 \value{
-A tibble with three columns:
+Invisibly returns a one-row tibble with three list-columns:
 \describe{
   \item{new_suppressed_cols}{A list of column names that are newly suppressed in `df_curr` but not in `df_prev`}
   \item{stopped_being_suppressed}{Columns that were suppressed in `df_prev` but are no longer suppressed in `df_curr`}

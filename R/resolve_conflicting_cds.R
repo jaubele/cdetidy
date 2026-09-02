@@ -10,7 +10,7 @@
 #'   \item{Same-level conflicts}{The same CDS code appears at the same organization level but
 #'     with different school names (e.g., multiple virtual schools sharing one CDS at level `"S"`).
 #'     Resolved by `resolve_same_level_cds()`, which appends `"2"`, `"3"`, etc. to
-#'     `altered_cds` for the second and subsequent schools (ranked alphabetically).}
+#'     the CDS value for the second and subsequent schools (ranked alphabetically).}
 #' }
 #'
 #' @param df A data frame containing CDS codes and organization level indicators.
@@ -19,8 +19,8 @@
 #'   (e.g., `"C"`, `"D"`, `"S"`).
 #' @param school_col A string specifying the column name containing the school name, used by
 #'   `resolve_same_level_cds()`. Default is `"school_name"`.
-#' @param altered_col A string specifying the column name that holds the modified CDS values.
-#'   Default is `"altered_cds"`.
+#' @param altered_col A string specifying the 0/1 flag identifying modified CDS
+#'   rows. Default is `"altered_cds"`.
 #'
 #' @return A modified data frame with resolved CDS values. Two attributes are attached:
 #' \describe{
@@ -35,22 +35,30 @@ resolve_conflicting_cds <- function(df,
                                     org_level_col = "org_level",
                                     school_col    = "school_name",
                                     altered_col   = "altered_cds") {
-  
+
   # Step 1: Identify cross-level conflicting CDS codes
   conflicting_cds_df <- get_conflicting_cds(df, cds_col = cds_col, org_level_col = org_level_col)
-  
-  # Step 2: Resolve cross-level conflicts (appends "9999" to school-level rows)
-  df_modified <- replace_conflicting_cds(df, conflicting_cds_df, cds_col = cds_col, org_level_col = org_level_col)
-  
-  # Store cross-level conflicts as an attribute for later access
+
+  # Step 2: Resolve cross-level conflicts
+  df_modified <- replace_conflicting_cds(
+    df,
+    conflicting_cds_df,
+    cds_col = cds_col,
+    org_level_col = org_level_col,
+    altered_col = altered_col
+  )
+
+  # Step 3: Resolve same-level conflicts
+  df_modified <- resolve_same_level_cds(
+    df_modified,
+    cds_col = cds_col,
+    org_level_col = org_level_col,
+    school_col = school_col,
+    altered_col = altered_col
+  )
+
+  # Reattach the cross-level audit table to the final returned object.
   attr(df_modified, "conflicting_cds") <- conflicting_cds_df
-  
-  # Step 3: Resolve same-level conflicts (same CDS + org_level, different school names)
-  df_modified <- resolve_same_level_cds(df_modified,
-                                        cds_col       = cds_col,
-                                        org_level_col = org_level_col,
-                                        school_col    = school_col,
-                                        altered_col   = altered_col)
-  
+
   return(df_modified)
 }

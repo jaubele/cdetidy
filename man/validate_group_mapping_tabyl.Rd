@@ -2,7 +2,7 @@
 % Please edit documentation in R/validate_group_mapping_tabyl.R
 \name{validate_group_mapping_tabyl}
 \alias{validate_group_mapping_tabyl}
-\title{Validate that an old-to-new group mapping is one-to-one}
+\title{Validate that each source group maps to one standardized group}
 \usage{
 validate_group_mapping_tabyl(data, old_col, new_col)
 }
@@ -14,13 +14,15 @@ validate_group_mapping_tabyl(data, old_col, new_col)
 \item{new_col}{The unquoted name of the column representing the new mapped values.}
 }
 \value{
-Invisibly returns `TRUE` if the mapping is one-to-one; otherwise `FALSE`.
-Prints a success message if valid, or detailed messages if violations are found.
+Invisibly returns `TRUE` if every source value has exactly one
+  non-missing target; otherwise `FALSE`. Invalid source values are attached
+  as the `problems` attribute.
 }
 \description{
-Checks whether each unique value in the `old_col` maps to exactly one unique value in the `new_col`,
-and vice versa. Useful for validating recode tables, lookup joins, or classification maps before applying them.
-Uses `janitor::tabyl()` to cross-tabulate values and ensures each row and column contains only one match.
+Checks a many-to-one mapping: each source value must map to exactly one
+standardized value, but multiple synonymous source values may map to the
+same standardized value. Missing standardized values are treated as invalid
+when the source value is non-missing.
 }
 \examples{
 \dontrun{

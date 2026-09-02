@@ -1,15 +1,17 @@
-#' Validate that an old-to-new group mapping is one-to-one
+#' Validate that each source group maps to one standardized group
 #'
-#' Checks whether each unique value in the `old_col` maps to exactly one unique value in the `new_col`,
-#' and vice versa. Useful for validating recode tables, lookup joins, or classification maps before applying them.
-#' Uses `janitor::tabyl()` to cross-tabulate values and ensures each row and column contains only one match.
+#' Checks a many-to-one mapping: each source value must map to exactly one
+#' standardized value, but multiple synonymous source values may map to the
+#' same standardized value. Missing standardized values are treated as invalid
+#' when the source value is non-missing.
 #'
 #' @param data A data frame containing the columns to be compared.
 #' @param old_col The unquoted name of the column representing the original values (e.g., codes or old labels).
 #' @param new_col The unquoted name of the column representing the new mapped values.
 #'
-#' @return Invisibly returns `TRUE` if the mapping is one-to-one; otherwise `FALSE`.
-#' Prints a success message if valid, or detailed messages if violations are found.
+#' @return Invisibly returns `TRUE` if every source value has exactly one
+#'   non-missing target; otherwise `FALSE`. Invalid source values are attached
+#'   as the `problems` attribute.
 #'
 #' @examples
 #' \dontrun{
@@ -19,29 +21,35 @@
 #' @export
 
 validate_group_mapping_tabyl <- function(data, old_col, new_col) {
-  require(janitor)
-  require(dplyr)
+  old_quo <- rlang::enquo(old_col)
+  new_quo <- rlang::enquo(new_col)
+  old_name <- rlang::as_name(old_quo)
+  new_name <- rlang::as_name(new_quo)
 
-  cross_tab <- data %>%
-    tabyl({{ old_col }}, {{ new_col }})
-
-  tab_matrix <- as.matrix(cross_tab[, -1])  # Remove the old_col label column
-
-  # Check how many values > 0 in each row and each column
-  row_violations <- which(rowSums(tab_matrix > 0) != 1)
-  col_violations <- which(colSums(tab_matrix > 0) != 1)
-
-  if (length(row_violations) == 0 && length(col_violations) == 0) {
-    message("\033[32m✅ Each original value maps to exactly one new value.\033[0m")
-    return(invisible(TRUE))
-  } else {
-    message("\033[31m❌ Detected unexpected mappings:\033[0m")
-    if (length(row_violations) > 0) {
-      message("→ ", length(row_violations), " original value(s) map to multiple new values.")
-    }
-    if (length(col_violations) > 0) {
-      message("→ ", length(col_violations), " new value(s) receive multiple original values.")
-    }
-    return(invisible(FALSE))
+  missing_cols <- setdiff(c(old_name, new_name), names(data))
+  if (length(missing_cols) > 0) {
+    stop("Missing mapping column(s): ", paste(missing_cols, collapse = ", "), call. = FALSE)
   }
+
+  mapping <- data |>
+    dplyr::filter(!is.na(.data[[old_name]])) |>
+    dplyr::group_by(.data[[old_name]]) |>
+    dplyr::summarise(
+      n_targets = dplyr::n_distinct(.data[[new_name]], na.rm = TRUE),
+      has_missing_target = any(is.na(.data[[new_name]])),
+      .groups = "drop"
+    )
+
+  problems <- mapping |>
+    dplyr::filter(n_targets != 1L | has_missing_target)
+  valid <- nrow(problems) == 0L
+
+  if (valid) {
+    message("\033[32m✅ Each source value maps to exactly one standardized value.\033[0m")
+  } else {
+    message("\033[31m❌ Source values with missing or multiple mappings detected:\033[0m")
+    print(problems)
+  }
+
+  invisible(structure(valid, problems = problems))
 }

@@ -27,12 +27,6 @@ generate_sql_script <- function(
     schema_log_path = "T:/Data Warehouse/Warehouse Ready Files/schema_files")
 
 {
-  # --- Imports kept local for clarity and self-containment
-  library(dplyr)
-  library(glue)
-  library(readr)
-  library(purrr)
-  library(tibble)
 
   # --- validate single source
   valid_keys <- c("assessment","cde","dashboard")

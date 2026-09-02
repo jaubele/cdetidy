@@ -43,17 +43,47 @@ export(validate_primary_key)
 export(validate_sql_identifiers)
 export(verify_padded_cds)
 export(zero_inflation_diff)
-importFrom(cli,cli_alert_danger)
-importFrom(cli,cli_alert_success)
-importFrom(dplyr,across)
-importFrom(dplyr,anti_join)
-importFrom(dplyr,bind_rows)
-importFrom(dplyr,distinct)
-importFrom(dplyr,mutate)
-importFrom(dplyr,where)
-importFrom(readr,col_character)
-importFrom(readr,col_guess)
-importFrom(readr,cols)
-importFrom(readr,locale)
-importFrom(readr,read_csv)
+import(dplyr)
+importFrom(cli,
+  cli_alert_danger,
+  cli_alert_success
+)
+importFrom(data.table,
+  ":=",
+  fread,
+  fwrite
+)
+importFrom(dplyr,
+  across,
+  anti_join,
+  bind_rows,
+  distinct,
+  mutate,
+  where
+)
+importFrom(magrittr,"%>%")
+importFrom(purrr,
+  map_int,
+  map_lgl
+)
+importFrom(readr,
+  col_character,
+  col_guess,
+  cols,
+  locale,
+  read_csv
+)
+importFrom(rlang,.data)
+importFrom(stats,na.omit)
 importFrom(stringr,str_pad)
+importFrom(tibble,tibble)
+importFrom(tidyr,
+  pivot_longer,
+  pivot_wider
+)
+importFrom(utils,
+  head,
+  read.csv,
+  write.csv,
+  write.table
+)
