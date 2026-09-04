@@ -1,3 +1,9 @@
+# cdetidy 0.1.6
+
+- Added `validate_recode()` to validate many-to-one recodes, identify missing
+  or conflicting target values, optionally print diagnostic tables, and
+  optionally stop pipelines when invalid mappings are detected.
+
 # cdetidy 0.1.5 cleanup
 
 This focused cleanup strengthens the shared helpers used by the streamlined

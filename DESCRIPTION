@@ -1,6 +1,6 @@
 Package: cdetidy
 Title: Tools for Working with CDE Datasets
-Version: 0.1.5
+Version: 0.1.6
 Depends:
     R (>= 4.1.0)
 Authors@R: c(
