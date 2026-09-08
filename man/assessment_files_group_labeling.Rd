@@ -2,30 +2,45 @@
 % Please edit documentation in R/assessment_files_group_labeling.R
 \name{assessment_files_group_labeling}
 \alias{assessment_files_group_labeling}
-\title{Apply classification mapping across multiple assessment file columns}
+\title{Label assessment-file student groups and grades}
 \usage{
-assessment_files_group_labeling(df, var_names, output_names)
+assessment_files_group_labeling(
+  df,
+  var_names,
+  output_names,
+  variable_types,
+  assessment_type,
+  data_year,
+  validate = FALSE,
+  fail_on_unmapped = TRUE
+)
 }
 \arguments{
-\item{df}{A data frame containing one or more columns to classify.}
+\item{df}{A data frame containing assessment classifications.}
 
-\item{var_names}{A character vector of column names in `df` to which the classification should be applied.}
+\item{var_names}{Character vector containing source-column names.}
 
-\item{output_names}{A character vector of prefixes for new output columns. Must be the same length as `var_names`.}
+\item{output_names}{Character vector containing output-column prefixes.}
+
+\item{variable_types}{Character vector identifying each source column as
+`"student_group"` or `"grade"`.}
+
+\item{assessment_type}{Assessment family. The initial implementation
+supports `"SBAC"`.}
+
+\item{data_year}{Two-digit ending year, such as `25`.}
+
+\item{validate}{If `TRUE`, print source frequencies and mapping tables.}
+
+\item{fail_on_unmapped}{If `TRUE`, stop when a nonmissing source value
+cannot be mapped. Otherwise, issue a warning.}
 }
 \value{
-The original data frame with new columns added for each input variable:
-`<prefix>_label`, `<prefix>_num`, `<prefix>_group_num`, and `<prefix>_group`.
+The original data frame with four new columns per source variable:
+  `<prefix>_label`, `<prefix>_num`, `<prefix>_group_num`, and
+  `<prefix>_group`.
 }
 \description{
-This function applies a hardcoded classification map to one or more columns in an assessment dataset.
-It dynamically adds new variables for label, numeric code, group number, and group name using
-user-defined output prefixes. It also includes interactive prompts to resolve duplicate values that
-appear across multiple classifications. Grade values are temporarily recoded to match the map,
-then restored after mapping is complete.
-}
-\details{
-- Values in the "grade" column are temporarily recoded to match expected numeric keys in the classification map.
-- The function will stop and report any unmatched values.
-- Duplicate values across multiple classification entries will prompt the user to choose which label to assign.
+Applies an assessment-, year-, and variable-specific classification map
+to one or more assessment-file columns.
 }
