@@ -12,7 +12,8 @@ assessment_files_group_labeling(
   assessment_type,
   data_year,
   validate = FALSE,
-  fail_on_unmapped = TRUE
+  fail_on_unmapped = TRUE,
+  return_map = FALSE
 )
 }
 \arguments{
@@ -34,11 +35,17 @@ supports `"SBAC"`.}
 
 \item{fail_on_unmapped}{If `TRUE`, stop when a nonmissing source value
 cannot be mapped. Otherwise, issue a warning.}
+
+\item{return_map}{If `TRUE`, return a named list containing the labeled
+data in `data` and the applicable classification map in `map`.
+If `FALSE`, return only the labeled data frame.}
 }
 \value{
-The original data frame with four new columns per source variable:
-  `<prefix>_label`, `<prefix>_num`, `<prefix>_group_num`, and
-  `<prefix>_group`.
+If `return_map = FALSE`, the original data frame with four new
+  columns per source variable: `<prefix>_label`, `<prefix>_num`,
+  `<prefix>_group_num`, and `<prefix>_group`. If `return_map = TRUE`,
+  a named list containing the labeled data in `data` and the classification
+  map in `map`.
 }
 \description{
 Applies an assessment-, year-, and variable-specific classification map

@@ -377,10 +377,15 @@ standardize_assessment_source_value <- function(x) {
 #' @param validate If `TRUE`, print source frequencies and mapping tables.
 #' @param fail_on_unmapped If `TRUE`, stop when a nonmissing source value
 #'   cannot be mapped. Otherwise, issue a warning.
+#' @param return_map If `TRUE`, return a named list containing the labeled
+#'   data in `data` and the applicable classification map in `map`.
+#'   If `FALSE`, return only the labeled data frame.
 #'
-#' @return The original data frame with four new columns per source variable:
-#'   `<prefix>_label`, `<prefix>_num`, `<prefix>_group_num`, and
-#'   `<prefix>_group`.
+#' @return If `return_map = FALSE`, the original data frame with four new
+#'   columns per source variable: `<prefix>_label`, `<prefix>_num`,
+#'   `<prefix>_group_num`, and `<prefix>_group`. If `return_map = TRUE`,
+#'   a named list containing the labeled data in `data` and the classification
+#'   map in `map`.
 #'
 #' @export
 assessment_files_group_labeling <- function(
@@ -391,11 +396,20 @@ assessment_files_group_labeling <- function(
     assessment_type,
     data_year,
     validate = FALSE,
-    fail_on_unmapped = TRUE) {
+    fail_on_unmapped = TRUE,
+    return_map = FALSE) {
   
   if (!is.data.frame(df)) {
     stop(
       "`df` must be a data frame.",
+      call. = FALSE)
+  }
+  
+  if (length(return_map) != 1L ||
+      !is.logical(return_map) ||
+      is.na(return_map)) {
+    stop(
+      "`return_map` must be either `TRUE` or `FALSE`.",
       call. = FALSE)
   }
   
@@ -549,6 +563,22 @@ assessment_files_group_labeling <- function(
         validation_table,
         row.names = FALSE)
     }
+  }
+  
+  if (isTRUE(return_map)) {
+    map_used <- classification_map[
+      classification_map$variable_type %in%
+        unique(variable_types),
+      ,
+      drop = FALSE
+    ]
+    
+    rownames(map_used) <- NULL
+    
+    return(list(
+      data = df,
+      map = tibble::as_tibble(map_used)
+    ))
   }
   
   df
