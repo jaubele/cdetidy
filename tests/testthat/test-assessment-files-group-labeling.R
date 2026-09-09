@@ -130,3 +130,144 @@ test_that("SBAC mapping supports zero-padded character codes", {
       "Grade 3",
       "Grade 8"))
 })
+
+test_that("SBAC mapping returns data only by default", {
+  test_data <- data.frame(
+    student_group_id = c(1L, 74L),
+    grade = c(3L, 8L)
+  )
+  
+  result <- assessment_files_group_labeling(
+    test_data,
+    var_names = c(
+      "student_group_id",
+      "grade"),
+    output_names = c(
+      "demo_group",
+      "grade"),
+    variable_types = c(
+      "student_group",
+      "grade"),
+    assessment_type = "SBAC",
+    data_year = 25L)
+  
+  expect_s3_class(
+    result,
+    "data.frame")
+  
+  expect_true(
+    all(c(
+      "demo_group_label",
+      "demo_group_num",
+      "grade_label",
+      "grade_num"
+    ) %in% names(result)))
+})
+
+test_that("SBAC mapping can return labeled data and its map", {
+  test_data <- data.frame(
+    student_group_id = c(1L, 74L, 243L),
+    grade = c(3L, 8L, 13L)
+  )
+  
+  result <- assessment_files_group_labeling(
+    test_data,
+    var_names = c(
+      "student_group_id",
+      "grade"),
+    output_names = c(
+      "demo_group",
+      "grade"),
+    variable_types = c(
+      "student_group",
+      "grade"),
+    assessment_type = "SBAC",
+    data_year = 25L,
+    return_map = TRUE)
+  
+  expect_named(
+    result,
+    c("data", "map"))
+  
+  expect_s3_class(
+    result$data,
+    "data.frame")
+  
+  expect_s3_class(
+    result$map,
+    "tbl_df")
+  
+  expect_equal(
+    nrow(result$map),
+    66L)
+  
+  expect_equal(
+    sum(result$map$variable_type == "student_group"),
+    58L)
+  
+  expect_equal(
+    sum(result$map$variable_type == "grade"),
+    8L)
+  
+  expect_equal(
+    result$data$demo_group_label,
+    c(
+      "All Students",
+      "Black or African American",
+      "Adult English Learner"))
+})
+
+
+test_that("returned map includes only requested variable types", {
+  test_data <- data.frame(
+    student_group_id = c(1L, 74L)
+  )
+  
+  result <- assessment_files_group_labeling(
+    test_data,
+    var_names = "student_group_id",
+    output_names = "demo_group",
+    variable_types = "student_group",
+    assessment_type = "SBAC",
+    data_year = 25L,
+    return_map = TRUE)
+  
+  expect_equal(
+    nrow(result$map),
+    58L)
+  
+  expect_identical(
+    unique(result$map$variable_type),
+    "student_group")
+})
+
+
+test_that("return_map requires one nonmissing logical value", {
+  test_data <- data.frame(
+    student_group_id = 1L
+  )
+  
+  expect_error(
+    assessment_files_group_labeling(
+      test_data,
+      var_names = "student_group_id",
+      output_names = "demo_group",
+      variable_types = "student_group",
+      assessment_type = "SBAC",
+      data_year = 25L,
+      return_map = NA),
+    "`return_map` must be either `TRUE` or `FALSE`",
+    fixed = TRUE)
+  
+  expect_error(
+    assessment_files_group_labeling(
+      test_data,
+      var_names = "student_group_id",
+      output_names = "demo_group",
+      variable_types = "student_group",
+      assessment_type = "SBAC",
+      data_year = 25L,
+      return_map = "yes"),
+    "`return_map` must be either `TRUE` or `FALSE`",
+    fixed = TRUE)
+})
