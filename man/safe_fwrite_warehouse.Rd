@@ -19,7 +19,9 @@ safe_fwrite_warehouse(
   dim_description = NULL,
   log_path = "export_log.csv",
   canonical_table_id = NULL,
-  dimension_type = NULL
+  dimension_type = NULL,
+  overwrite = FALSE,
+  write_log = FALSE
 )
 }
 \arguments{
@@ -52,9 +54,16 @@ safe_fwrite_warehouse(
 \item{canonical_table_id}{Optional. A unique identifier for the export record. Defaults to `table_name`.}
 
 \item{dimension_type}{Optional. Type of dimension table (`"universal"`, `"annualized"`, or `"other"`).}
+
+\item{overwrite}{Logical. If `FALSE`, stop when the output file already
+exists. Default is `FALSE`.}
+
+\item{write_log}{Logical. If `TRUE`, create or update the export metadata
+log at `log_path`. Default is `FALSE`.}
 }
 \value{
-Invisibly returns `NULL`. The function writes the CSV and appends (or updates) a log entry.
+Invisibly returns a one-row data frame containing the export log
+  entry.
 }
 \description{
 Exports a data frame to a standardized warehouse folder structure (e.g., T drive), ensures
