@@ -11,10 +11,10 @@
 #' @param n_check Integer. Number of rows to preview after writing. Default is 6.
 #' @param log_metadata A named list containing metadata fields, including `data_year`, `data_source`, `data_description`, and `user_note`. If `NULL`, the function uses the corresponding individual arguments.
 #' @param data_year The year the data represents. Required if `log_metadata` is not supplied.
-#' @param data_source A short label identifying the source of the data (e.g., `"CDE"`, `"Dashboard"`).
-#' @param data_type Short label used to choose the subfolder under the data source (e.g., `"Absenteeism"` under `"CDE"`). Required if path is NULL. Case-insensitive; common synonyms accepted.
 #' @param data_source A short label identifying the source of the data (e.g., `"CDE"`, `"Dashboard"`, `"Assessment"`).
-#' @param data_type A short label identifying what type of data you are writing out (e.g., "`CAST`", "`SBAC`", "`Absenteeism`", dims)
+#' @param data_type Short label used to choose the subfolder under the data
+#'   source (for example, `"SBAC"` or `"Absenteeism"`). Required when
+#'   `path = NULL`. Matching is case-insensitive and accepts common synonyms.
 #' @param data_description A short description of the dataset (e.g., `"Chronic absenteeism rates by subgroup"`).
 #' @param user_note A note describing the nature of the export. Must include `"fact"` or `"dim"` to indicate table type.
 #' @param table_name The base name of the output table.
@@ -22,8 +22,13 @@
 #' @param log_path The path to the export log CSV. Default is `"export_log.csv"`.
 #' @param canonical_table_id Optional. A unique identifier for the exported table. Defaults to `table_name` if `NULL`.
 #' @param dimension_type Optional. One of `"universal"`, `"annualized"`, or `"other"`. Applies to dimension tables.
+#' @param overwrite Logical. If `FALSE`, stop when the output file already
+#'   exists. Default is `FALSE`.
+#' @param write_log Logical. If `TRUE`, create or update the export metadata
+#'   log at `log_path`. Default is `FALSE`.
 #'
-#' @return Invisibly returns `NULL`. The function writes the data to disk and logs metadata to a central log file.
+#' @return Invisibly returns a one-row data frame containing the export log
+#'   entry.
 #'
 #' @details
 #' - Validates required metadata fields and data source types.
@@ -48,14 +53,14 @@ safe_fwrite <- function(
     dim_description = NULL,
     log_path = "export_log.csv",
     canonical_table_id = NULL,
-    dimension_type = NULL) {
-
-  `%||%` <- function(x, y) if (is.null(x) || (length(x) == 1 && is.na(x))) y else x
-
+    dimension_type = NULL,
+    overwrite = FALSE,
+    write_log = FALSE) {
+  
   norm_token <- function(x) gsub("[^a-z0-9]+", "", tolower(trimws(as.character(x))))
-
+  
   title_underscore <- function(x) gsub("\\s+", "_", tools::toTitleCase(gsub("_", " ", x)))
-
+  
   # --- catalogs & resolver ---
   catalog <- list(
     Assessment = list(
@@ -64,9 +69,7 @@ safe_fwrite <- function(
         SBAC  = c("sbac","smarter","smarterbalanced"),
         CAST  = c("cast","science"),
         ELPAC = c("elpac","englishlanguageproficiency","elpa"),
-        dim = c("dim", "dimension")
-      )
-    ),
+        dim = c("dim", "dimension"))),
     CDE = list(
       values = c("Absenteeism","Enrollment","Discipline","EL","Grad_Dropout","Post_Secondary", 
                  "Staff", "Alternative_Ed", "Special_Education", "dim"),
@@ -80,9 +83,7 @@ safe_fwrite <- function(
         Staff = c("staff", "certificated", "classified", "tamo", "hire"),
         Alternative_Ed = c("alted", "alt", "juvenile", "community schools", "juvenile court"),
         Special_Education = c("special_ed", "sped", "special_education"),
-        dim = c("dim", "dimension")
-      )
-    ),
+        dim = c("dim", "dimension"))),
     Dashboard = list(
       values = c("Achievement", "Engagement", "Climate", "Broad_Course", "Info_Only", "dim"),
       syns = list(
@@ -91,10 +92,8 @@ safe_fwrite <- function(
         Climate = c("suspension","sus", "susp"),
         Broad_Course = c("cci", "college_and_career", "college", "career"),
         Info_Only = c("science", "sci", "growth_rate", "growth"),
-        dim = c("dim", "dimension"))
-    )
-  )
-
+        dim = c("dim", "dimension"))))
+  
   resolve_type <- function(ds_label, dt_input) {
     catg <- catalog[[ds_label]]
     if (is.null(catg)) stop("❌ Unsupported data_source catalog: ", ds_label)
@@ -107,7 +106,16 @@ safe_fwrite <- function(
          paste(catg$values, collapse=", "),
          " (case-insensitive; synonyms accepted).")
   }
-
+  
+  if (!is.data.frame(data)) {
+    stop("`data` must be a data frame.", call. = FALSE)
+  }
+  
+  if (length(n_check) != 1L || is.na(n_check) || n_check < 0L) {
+    stop("`n_check` must be one nonnegative number.", call. = FALSE)
+  }
+  n_check <- as.integer(n_check)
+  
   # --- build/validate metadata ---
   if (is.null(log_metadata)) {
     if (is.null(data_source)) stop("❌ Provide `data_source` (or a `log_metadata` list).")
@@ -115,32 +123,47 @@ safe_fwrite <- function(
       data_year       = data_year,        # optional, for audit only
       data_source     = data_source,
       data_description= data_description,
-      user_note       = user_note
-    )
+      user_note       = user_note)
   }
-  if (is.null(log_metadata$data_description) || is.na(log_metadata$data_description) || log_metadata$data_description == "")
+  
+  if (!is.null(log_metadata$data_year)) {
+    data_year <- log_metadata$data_year
+  }
+  if (!is.null(log_metadata$data_source)) {
+    data_source <- log_metadata$data_source
+  }
+  if (!is.null(log_metadata$data_description)) {
+    data_description <- log_metadata$data_description
+  }
+  if (!is.null(log_metadata$user_note)) {
+    user_note <- log_metadata$user_note
+  }
+  
+  if (isTRUE(write_log) &&
+      (is.null(data_description) ||
+       is.na(data_description) ||
+       data_description == ""))
     stop("❌ Please provide `data_description`.")
-
+  
   ds_label <- (function(x){
     tok <- norm_token(x)
     out <- c(assessment="Assessment", cde="CDE", dashboard="Dashboard")[tok]
     if (is.na(out)) stop("❌ `data_source` must be one of: Assessment, CDE, Dashboard.")
     out
-  })(log_metadata$data_source)
-
+  })(data_source)
+  
   if (is.null(table_name)) stop("❌ Please supply `table_name`.")
   if (is.null(user_note) || !grepl("\\b(fact|dim)\\b", user_note, ignore.case = TRUE))
     stop("❌ `user_note` must include 'fact' or 'dim'.")
   table_type <- tolower(stringr::str_extract(user_note, "\\b(fact|dim)\\b"))
   if (is.na(table_type)) stop("❌ Could not parse table type from `user_note`.")
   if (!is.null(dim_description)) dim_description <- janitor::make_clean_names(dim_description)
-
+  
   final_table_name <- paste0(
     table_name,
     if (!is.null(dim_description)) paste0("_", dim_description),
-    "_", table_type
-  )
-
+    "_", table_type)
+  
   # --- auto path: T:/Data Warehouse/{DataSource}/{DataType}/ ---
   if (is.null(path)) {
     if (is.null(data_type)) stop("❌ Please provide `data_type` when `path` is NULL.")
@@ -151,31 +174,54 @@ safe_fwrite <- function(
     dir.create(dirname(path), recursive = TRUE, showWarnings = FALSE)
   }
   if (compress && !grepl("\\.gz$", path)) path <- paste0(path, ".gz")
-
+  
+  if (file.exists(path) && !isTRUE(overwrite)) {
+    stop(
+      "Output file already exists: ",
+      path,
+      ". Use `overwrite = TRUE` to replace it.",
+      call. = FALSE)
+  }
+  
+  dir.create(dirname(path), recursive = TRUE, showWarnings = FALSE)
+  
   # --- enforce character on code columns ---
   default_char_cols <- if (table_type == "dim")
     c("cds","county_code","district_code","school_code") else c("cds")
   target_char_cols <- intersect(unique(c(char_cols, default_char_cols)), names(data))
   if (length(target_char_cols))
     data <- dplyr::mutate(data, dplyr::across(dplyr::all_of(target_char_cols), as.character))
-
+  
   # --- write + quick preview ---
   data.table::fwrite(data, path)
   message("✅ File written: ", path)
-  if (n_check > 0)
-    print(data.table::fread(path, nrows = n_check, colClasses = list(character = target_char_cols)))
-
+  if (n_check > 0L) {
+    preview <- if (length(target_char_cols) > 0L) {
+      data.table::fread(
+        path,
+        nrows = n_check,
+        colClasses = list(character = target_char_cols))
+    } else {
+      data.table::fread(path, nrows = n_check)
+    }
+    print(preview)
+  }
+  
   # --- logging ---
   fi <- file.info(path)
   if (is.na(fi$size)) stop("File does not exist or is unreadable: ", path)
-
-  canonical_table_id <- canonical_table_id %||% table_name
-  dimension_type <- dimension_type %||% NA
+  
+  if (is.null(canonical_table_id)) {
+    canonical_table_id <- table_name
+  }
+  if (is.null(dimension_type)) {
+    dimension_type <- NA_character_
+  }
   valid_dimension_types <- c("universal","annualized","other")
   if (!is.na(dimension_type) && !tolower(dimension_type) %in% valid_dimension_types)
     stop("❌ `dimension_type` must be one of: ", paste(valid_dimension_types, collapse = ", "))
   dimension_type <- if (is.na(dimension_type)) NA_character_ else tolower(dimension_type)
-
+  
   log_entry <- data.frame(
     timestamp        = format(Sys.time(), "%Y-%m-%d %H:%M:%S"),
     file_name        = basename(path),
@@ -185,33 +231,48 @@ safe_fwrite <- function(
     dimension_type   = dimension_type,
     n_rows           = nrow(data),
     n_cols           = ncol(data),
-    data_year        = log_metadata$data_year %||% NA,
+    data_year        = if (is.null(data_year)) NA else data_year,
     data_source      = ds_label,
     table_type       = table_type,
-    data_description = log_metadata$data_description,
-    dim_description  = dim_description %||% NA,
+    data_description = data_description,
+    dim_description  = if (is.null(dim_description)) NA else dim_description,
     user_note        = user_note,
     user             = Sys.info()[["user"]],
-    stringsAsFactors = FALSE
-  )
-
-  if (file.exists(log_path)) {
-    existing_log <- read.csv(log_path, stringsAsFactors = FALSE)
-    match_idx <- which(existing_log$canonical_table_id == canonical_table_id)
-    if (length(match_idx)) {
-      existing_log[match_idx[1], ] <- log_entry
-      write.csv(existing_log, log_path, row.names = FALSE)
-      message("🔁 Existing log entry overwritten for: ", log_entry$file_name)
+    stringsAsFactors = FALSE)
+  
+  if (isTRUE(write_log)) {
+    dir.create(dirname(log_path), recursive = TRUE, showWarnings = FALSE)
+    
+    if (file.exists(log_path)) {
+      existing_log <- read.csv(log_path, stringsAsFactors = FALSE)
+      match_idx <- which(
+        existing_log$canonical_table_id == canonical_table_id)
+      
+      if (length(match_idx)) {
+        existing_log[match_idx[1], ] <- log_entry
+        write.csv(existing_log, log_path, row.names = FALSE)
+        message("🔁 Existing log entry overwritten for: ", log_entry$file_name)
+      } else {
+        write.table(
+          log_entry,
+          log_path,
+          append = TRUE,
+          sep = ",",
+          row.names = FALSE,
+          col.names = FALSE)
+        message("📝 Log entry appended to: ", log_entry$file_name)
+      }
     } else {
-      write.table(log_entry, log_path, append = TRUE, sep = ",",
-                  row.names = FALSE, col.names = FALSE)
-      message("📝 Log entry appended to: ", log_entry$file_name)
+      write.table(
+        log_entry,
+        log_path,
+        append = FALSE,
+        sep = ",",
+        row.names = FALSE,
+        col.names = TRUE)
+      message("📄 New log created: ", log_path)
     }
-  } else {
-    write.table(log_entry, log_path, append = FALSE, sep = ",",
-                row.names = FALSE, col.names = TRUE)
-    message("📄 New log created: ", log_path)
   }
-
-  invisible(NULL)
+  
+  invisible(log_entry)
 }

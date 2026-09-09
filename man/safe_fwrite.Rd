@@ -20,7 +20,9 @@ safe_fwrite(
   dim_description = NULL,
   log_path = "export_log.csv",
   canonical_table_id = NULL,
-  dimension_type = NULL
+  dimension_type = NULL,
+  overwrite = FALSE,
+  write_log = FALSE
 )
 }
 \arguments{
@@ -40,7 +42,9 @@ safe_fwrite(
 
 \item{data_source}{A short label identifying the source of the data (e.g., `"CDE"`, `"Dashboard"`, `"Assessment"`).}
 
-\item{data_type}{A short label identifying what type of data you are writing out (e.g., "`CAST`", "`SBAC`", "`Absenteeism`", dims)}
+\item{data_type}{Short label used to choose the subfolder under the data
+source (for example, `"SBAC"` or `"Absenteeism"`). Required when
+`path = NULL`. Matching is case-insensitive and accepts common synonyms.}
 
 \item{data_description}{A short description of the dataset (e.g., `"Chronic absenteeism rates by subgroup"`).}
 
@@ -55,9 +59,16 @@ safe_fwrite(
 \item{canonical_table_id}{Optional. A unique identifier for the exported table. Defaults to `table_name` if `NULL`.}
 
 \item{dimension_type}{Optional. One of `"universal"`, `"annualized"`, or `"other"`. Applies to dimension tables.}
+
+\item{overwrite}{Logical. If `FALSE`, stop when the output file already
+exists. Default is `FALSE`.}
+
+\item{write_log}{Logical. If `TRUE`, create or update the export metadata
+log at `log_path`. Default is `FALSE`.}
 }
 \value{
-Invisibly returns `NULL`. The function writes the data to disk and logs metadata to a central log file.
+Invisibly returns a one-row data frame containing the export log
+  entry.
 }
 \description{
 Writes a data frame to a standardized T drive location (or user-defined path), enforces character
